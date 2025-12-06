@@ -23,7 +23,13 @@
     "test:watch": "vitest --watch",
     "lint": "eslint src/**/*.js",
     "format": "prettier --write \"src/**/*.js\" \"docs/**/*.md\"",
-    "size-check": "npm run build:check"
+    "size-check": "npm run build:check",
+    "repomix": "npx repomix",
+    "repomix:dev": "npx repomix --config .repomix/developer.config.json",
+    "repomix:pm": "npx repomix --config .repomix/pm.config.json",
+    "repomix:marketing": "npx repomix --config .repomix/marketing.config.json",
+    "repomix:docs": "npx repomix --config .repomix/docs.config.json",
+    "repomix:ai": "npx repomix --config .repomix/ai.config.json"
   },
   "keywords": [
     "framework",

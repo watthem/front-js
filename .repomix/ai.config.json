@@ -1,0 +1,22 @@
+{
+  "output": {
+    "filePath": "ai.repomix.txt",
+    "style": "xml",
+    "headerText": "front.js - AI Agent Context (Complete Technical View)",
+    "removeComments": false,
+    "showLineNumbers": true
+  },
+  "include": [
+    "**/*"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "community/",
+      ".cursor/",
+      ".claude/",
+      "*.repomix.*"
+    ]
+  }
+}

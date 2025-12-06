@@ -175,7 +175,7 @@ npx serve .
 
 ## API Reference
 
-See [`docs/API.md`](./docs/API.md) for complete API documentation.
+See [`wiki/API.md`](./wiki/API.md) for complete API documentation.
 
 ### Quick Reference
 

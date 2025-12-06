@@ -1,0 +1,31 @@
+{
+  "output": {
+    "filePath": "pm.repomix.txt",
+    "style": "markdown",
+    "headerText": "front.js - Product Manager Context",
+    "removeComments": true,
+    "showLineNumbers": false
+  },
+  "include": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "wiki/PRD.md",
+    "wiki/FAQ.md",
+    "wiki/API.md",
+    "docs/BLUEPRINT.md",
+    "examples/README.md",
+    "community/FEEDBACK.md",
+    "package.json"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "src/**/*",
+      "tests/**/*",
+      "*.test.js",
+      "*.config.js",
+      "CLAUDE.md"
+    ]
+  }
+}

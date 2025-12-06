@@ -24,9 +24,15 @@ This document translates the PRD into an actionable engineering plan for front.j
 ```
 front-js/
 ├── docs/
-│   ├── PRD.md                    # Product requirements (existing)
 │   ├── BLUEPRINT.md              # This file
-│   └── API.md                    # API reference (to be generated)
+│   ├── ENGINE.md                 # Reactivity engine implementation
+│   └── DESIGN.md                 # Design decisions
+├── wiki/
+│   ├── API.md                    # API reference
+│   ├── PRD.md                    # Product requirements
+│   ├── STANDARDS.md              # Architectural standards
+│   ├── FAQ.md                    # Frequently asked questions
+│   └── TRANSLATIONS.md           # React migration guide
 ├── src/
 │   ├── core/
 │   │   ├── reactivity.js         # val/run/calc primitives
@@ -402,7 +408,7 @@ hydrate();
 
 1. Generate `README.md` with quickstart
 2. Generate `CONTRIBUTING.md` with standards
-3. Generate `docs/API.md` with full reference
+3. Generate `wiki/API.md` with full reference
 
 ### Phase 4: Polish (Future)
 

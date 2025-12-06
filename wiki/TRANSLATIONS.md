@@ -186,4 +186,3 @@ ${show() ? html`<span>Visible</span>` : ''}
 2.  Did you remove the dependency array? `run(() => ...)` (Good) vs `run(..., [])` (Bad).
 3.  Are you trying to pass functions from the server? Stop. Use `data-props` (JSON only).
 4.  Are you putting `val()` inside the return function? Move it up to the "Setup" phase.
-

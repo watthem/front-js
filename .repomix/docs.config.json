@@ -1,0 +1,29 @@
+{
+  "output": {
+    "filePath": "docs.repomix.txt",
+    "style": "markdown",
+    "headerText": "front.js - Documentation Context",
+    "removeComments": true,
+    "showLineNumbers": false
+  },
+  "include": [
+    "README.md",
+    "CONTRIBUTING.md",
+    "docs/**/*",
+    "wiki/**/*",
+    "examples/README.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "src/**/*",
+      "tests/**/*",
+      "examples/**/*.js",
+      "examples/**/*.html",
+      "community/**/*",
+      "*.config.js",
+      "CLAUDE.md"
+    ]
+  }
+}

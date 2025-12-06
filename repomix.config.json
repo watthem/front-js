@@ -1,0 +1,28 @@
+{
+  "output": {
+    "filePath": "repomix-output.txt",
+    "style": "markdown",
+    "headerText": "front.js - 5KB Islands Architecture Framework",
+    "instructionFilePath": ".repomix/instructions.md",
+    "removeComments": false,
+    "showLineNumbers": true,
+    "topFilesLength": 5
+  },
+  "include": [
+    "**/*"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/*.repomix.*",
+      ".repomix/",
+      "community/",
+      ".cursor/",
+      ".claude/"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  }
+}

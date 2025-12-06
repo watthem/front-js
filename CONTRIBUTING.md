@@ -1,6 +1,6 @@
 # Contributing to front.js
 
-We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [Standards](./docs/STANDARDS.md) before submitting code to ensure you align with our architecture.
+We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [Standards](./wiki/STANDARDS.md) before submitting code to ensure you align with our architecture.
 
 ## Core Philosophy
 
@@ -50,8 +50,8 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
 
 1. **Read the docs first:**
    - [`docs/BLUEPRINT.md`](./docs/BLUEPRINT.md) - Architecture overview
-   - [`docs/STANDARDS.md`](./docs/STANDARDS.md) - Coding standards
-   - [`docs/PRD.md`](./docs/PRD.md) - Product requirements
+   - [`wiki/STANDARDS.md`](./wiki/STANDARDS.md) - Coding standards
+   - [`wiki/PRD.md`](./wiki/PRD.md) - Product requirements
 
 2. **Create a feature branch:**
    ```bash
@@ -133,7 +133,7 @@ npm run test:watch # Watch mode
 * **Keep it Dependency-Free:** Do not add NPM dependencies to the runtime. `uhtml` is the only allowed exception (peer dependency).
 * **Test Thoroughly:** Run tests and verify examples work.
 * **Check Size:** Ensure bundle size stays under 5KB.
-* **Update Docs:** Update API.md and README if adding/changing APIs.
+* **Update Docs:** Update wiki/API.md and README if adding/changing APIs.
 * **Security Review:** All changes are reviewed for security implications.
 
 ## Architecture Decisions
@@ -142,7 +142,7 @@ Major architectural decisions should be:
 
 1. Discussed in an issue first
 2. Documented in `docs/BLUEPRINT.md`
-3. Aligned with `docs/STANDARDS.md`
+3. Aligned with `wiki/STANDARDS.md`
 4. Approved before implementation
 
 ## Questions?

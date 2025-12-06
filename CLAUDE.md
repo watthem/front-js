@@ -27,7 +27,7 @@ npx serve .
 
 ## Architecture Overview
 
-### Core Principles (see docs/STANDARDS.md)
+### Core Principles (see wiki/STANDARDS.md)
 
 1. **HTML is Truth**: Server renders HTML, client hydrates islands
 2. **Zero Magic**: Explicit component registration, no auto-importing
@@ -187,13 +187,13 @@ npm test -- tests/reactivity.test.js
 
 When making changes, verify against:
 1. **docs/BLUEPRINT.md** - Detailed architecture and implementation specs
-2. **docs/STANDARDS.md** - "North Star" principles (Headless Reactivity, Standard Schema alignment, Platform First)
-3. **docs/PRD.md** - Original product requirements
+2. **wiki/STANDARDS.md** - "North Star" principles (Headless Reactivity, Standard Schema alignment, Platform First)
+3. **wiki/PRD.md** - Original product requirements
 
 Major architectural changes require:
 1. Discussion in GitHub issue first
 2. Update to docs/BLUEPRINT.md
-3. Alignment with docs/STANDARDS.md
+3. Alignment with wiki/STANDARDS.md
 4. Size budget verification
 
 ## Standard Schema Future

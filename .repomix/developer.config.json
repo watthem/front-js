@@ -1,0 +1,28 @@
+{
+  "output": {
+    "filePath": "developer.repomix.txt",
+    "style": "markdown",
+    "headerText": "front.js - Developer Context (Full Codebase)",
+    "removeComments": false,
+    "showLineNumbers": true
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "examples/**/*",
+    "docs/**/*",
+    "*.config.js",
+    "*.json",
+    "README.md",
+    "CONTRIBUTING.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "wiki/",
+      "community/",
+      "CLAUDE.md"
+    ]
+  }
+}

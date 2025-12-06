@@ -31,7 +31,7 @@ export function val(initial) {
     }
     if (value !== args[0]) {
       value = args[0];
-      subscribers.forEach(fn => fn());
+      subscribers.forEach((fn) => fn());
     }
     return value;
   };
@@ -52,25 +52,24 @@ export function run(fn) {
 
     const prev = currentRun;
     currentRun = wrapper;
-    
+
     try {
       // 2. Execute the function
       const result = fn();
-      
+
       // 3. HARDENING: Check for Promise return type
       if (result instanceof Promise || (result && typeof result.then === 'function')) {
         console.warn(
           '[front.js] Warning: run() returned a Promise. ' +
-          'Async functions are not supported directly in run() because they break cleanup. ' +
-          'Use an IIFE (async () => {})() inside the effect instead.'
+            'Async functions are not supported directly in run() because they break cleanup. ' +
+            'Use an IIFE (async () => {})() inside the effect instead.'
         );
         // Discard the promise so we don't crash later
-        cleanup = undefined; 
+        cleanup = undefined;
       } else {
         // Valid cleanup function (or undefined)
         cleanup = result;
       }
-
     } catch (e) {
       console.error('[front.js] Error in run:', e);
     } finally {
@@ -94,13 +93,13 @@ export function calc(fn) {
 }
 ```
 
------
+---
 
 ### 2\. The Pattern: Safe Async Effects
 
 Now that we block `async run`, how do we actually fetch data?
 
-We use the **"Active Flag" Pattern**. This is crucial because network requests often finish *after* the user has clicked away (unmounted) or changed the inputs (update). If we don't track this, we get "Race Conditions" where an old request overwrites new data.
+We use the **"Active Flag" Pattern**. This is crucial because network requests often finish _after_ the user has clicked away (unmounted) or changed the inputs (update). If we don't track this, we get "Race Conditions" where an old request overwrites new data.
 
 **The Correct Pattern:**
 
@@ -108,25 +107,27 @@ We use the **"Active Flag" Pattern**. This is crucial because network requests o
 run(() => {
   // 1. Read dependencies (auto-subscribes)
   const query = searchQuery();
-  
+
   // 2. Setup Cancellation Token
-  let active = true; 
+  let active = true;
 
   // 3. Fire-and-Forget Async (IIFE)
   (async () => {
     const res = await fetch(`/api/${query}`);
     const json = await res.json();
-    
+
     // 4. Only update if still active
     if (active) results(json);
   })();
 
   // 5. Cleanup: Invalidate the token
-  return () => { active = false; };
+  return () => {
+    active = false;
+  };
 });
 ```
 
------
+---
 
 ### 3\. The Proof: `examples/github-user.js`
 
@@ -158,12 +159,12 @@ function GithubUser({ initialUser }) {
     (async () => {
       try {
         // Artificial delay to demonstrate race conditions if you type fast
-        await new Promise(r => setTimeout(r, 500));
-        
+        await new Promise((r) => setTimeout(r, 500));
+
         const res = await fetch(`https://api.github.com/users/${user}`);
         if (!res.ok) throw new Error('User not found');
         const data = await res.json();
-        
+
         // Safety Check
         if (active) {
           profile(data);
@@ -189,23 +190,23 @@ function GithubUser({ initialUser }) {
   return () => html`
     <div class="card">
       <h3>GitHub User Search</h3>
-      <input 
-        value="${username()}" 
-        oninput="${(e) => username(e.target.value)}" 
+      <input
+        value="${username()}"
+        oninput="${(e) => username(e.target.value)}"
         placeholder="Enter username..."
       />
-      
+
       ${loading() ? html`<p>Loading...</p>` : ''}
-      
       ${error() ? html`<p style="color: red">Error: ${error()}</p>` : ''}
-      
-      ${profile() ? html`
-        <div style="margin-top: 10px; border: 1px solid #ddd; padding: 10px;">
-          <img src="${profile().avatar_url}" width="50" style="float:left; margin-right:10px">
-          <strong>${profile().name || profile().login}</strong><br>
-          <small>Public Repos: ${profile().public_repos}</small>
-        </div>
-      ` : ''}
+      ${profile()
+        ? html`
+            <div style="margin-top: 10px; border: 1px solid #ddd; padding: 10px;">
+              <img src="${profile().avatar_url}" width="50" style="float:left; margin-right:10px" />
+              <strong>${profile().name || profile().login}</strong><br />
+              <small>Public Repos: ${profile().public_repos}</small>
+            </div>
+          `
+        : ''}
     </div>
   `;
 }
@@ -223,10 +224,10 @@ hydrate();
     <div data-island data-component="GithubUser" data-props='{"initialUser": "torvalds"}'></div>
     ```
 4.  **Run it.**
-      * **Test 1 (Normal):** It should load "torvalds".
-      * **Test 2 (Race Condition):** Type "microsoft" really fast. You should see logs in the console saying `[front.js] Ignored stale response...`. The UI should *only* show the result for the final string you typed, never an intermediate state flickering.
-      * **Test 3 (The Warning):** Temporarily change `run(() => ...)` to `run(async () => ...)` in the code. Check the console. You should see the nice warning: *"Use an IIFE inside the effect instead."*
+    - **Test 1 (Normal):** It should load "torvalds".
+    - **Test 2 (Race Condition):** Type "microsoft" really fast. You should see logs in the console saying `[front.js] Ignored stale response...`. The UI should _only_ show the result for the final string you typed, never an intermediate state flickering.
+    - **Test 3 (The Warning):** Temporarily change `run(() => ...)` to `run(async () => ...)` in the code. Check the console. You should see the nice warning: _"Use an IIFE inside the effect instead."_
 
 This confirms that `front.js` is now "Async Safe" while remaining ruthless about its API surface.
 
-See the `docs/TRANSLATION.md` for more details on how to translate this pattern to React users.
+See the [`wiki/TRANSLATIONS.md`](../wiki/TRANSLATIONS.md) for more details on how to translate this pattern to React users.

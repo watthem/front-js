@@ -330,8 +330,8 @@ front.js is designed to be learned in an afternoon, not a week.
 
 Check the other documentation:
 - **[API Reference](./API.md)** - Complete API docs
-- **[BLUEPRINT](./BLUEPRINT.md)** - Architecture deep-dive
+- **[BLUEPRINT](../docs/BLUEPRINT.md)** - Architecture deep-dive
 - **[STANDARDS](./STANDARDS.md)** - Design principles
-- **[Translation Guide](./TRANSLATION.md)** - Coming from React?
+- **[Translation Guide](./TRANSLATIONS.md)** - Coming from React?
 
 Or open an issue on GitHub. We're here to help.
