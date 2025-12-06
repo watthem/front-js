@@ -1,5 +1,8 @@
 # front.js
 
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![CI](https://github.com/front-js/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/front-js/front-js/actions/workflows/ci.yml)
+
 **The secure-by-default, islands-first micro-framework.**
 
 `front.js` is a tiny (<5KB) glue layer that connects server-rendered HTML to client-side interactivity. It enforces the "Islands Architecture" to prevent data leakage and XSS vulnerabilities common in modern Server Component frameworks.
@@ -14,13 +17,19 @@
 
 ## Installation
 
-Since `front.js` is designed to be zero-build, you can use it directly from source:
+### From Source (Zero Build)
 
-```bash
-npm install front
+Since `front.js` is designed to be zero-build, you can use it directly via ESM import:
+
+```javascript
+import { html, val, register, hydrate } from './path/to/front.esm.js';
 ```
 
-Or use it directly via ESM import (no build step required).
+### Via NPM
+
+```bash
+npm install front-js
+```
 
 ## Quick Start
 

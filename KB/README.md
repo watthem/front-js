@@ -50,7 +50,23 @@ The KB is a pure static site and can be deployed to:
 
 Just deploy the `KB/` directory contents.
 
-**Note:** This is the internal knowledge base. The main website is in the `website/` directory.
+### Recommended: GitHub Pages
+
+For the best user experience, deploy the KB to GitHub Pages at `kb.frontjs.com` (or a subdomain of your choosing):
+
+1. **Configure custom domain** (optional):
+   - Add a `CNAME` file to the `KB/` directory with your domain name
+   - Configure DNS with your domain registrar
+
+2. **Deploy via GitHub Actions**:
+   - Use the provided `.github/workflows/deploy-kb.yml` workflow
+   - Or manually push the `KB/` directory to the `gh-pages` branch
+
+3. **Update website links**:
+   - Once deployed, update `website/KB/index.html` to point to the live URL
+   - Update navigation links in `website/index.html` and `website/examples/index.html`
+
+**Note:** This is the internal knowledge base showcase. The main website is in the `website/` directory.
 
 ## Features
 

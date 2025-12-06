@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>front.js - Knowledge Base</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <div data-island data-component="NavBar" data-props='{
+      "links": [
+        {"label": "Home", "url": "/"},
+        {"label": "Examples", "url": "/examples/index.html"},
+        {"label": "Docs", "url": "/KB/"},
+        {"label": "GitHub", "url": "https://github.com/front-js/front-js"}
+      ]
+    }'></div>
+  <div class="container" style="padding-top: 60px;">
+    <header class="hero">
+      <h1>Knowledge Base</h1>
+      <p class="tagline">front.js as a documentation site generator</p>
+      <p class="description">
+        The KB is a <strong>showcase project</strong> demonstrating how to build a documentation site with front.js.
+        <br>
+        It features client-side markdown rendering, hash-based navigation, and zero build steps.
+      </p>
+    </header>
+
+    <section class="intent-signals">
+      <h2>About the KB Project</h2>
+      <div class="signals-grid">
+
+        <div class="signal">
+          <div class="signal-icon">
+            <!-- Book icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+          </div>
+          <h3>Documentation Site</h3>
+          <p>A complete documentation generator built with front.js, demonstrating markdown rendering and navigation.
+          </p>
+        </div>
+
+        <div class="signal">
+          <div class="signal-icon">
+            <!-- Island icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+          </div>
+          <h3>Reactive Components</h3>
+          <p>Features Navigation and MarkdownViewer components built with val, run, and calc primitives.</p>
+        </div>
+
+        <div class="signal">
+          <div class="signal-icon">
+            <!-- No Build icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+          <h3>Zero Build Step</h3>
+          <p>Pure HTML, CSS, and JavaScript. No bundlers, no transpilers. Just serve and go.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="core-primitives">
+      <h2>Features</h2>
+      <div class="signals-grid">
+        <div class="signal">
+          <h3>📝 Client-Side Markdown</h3>
+          <p>Uses the marked library from CDN to render markdown content dynamically.</p>
+        </div>
+        <div class="signal">
+          <h3>🔗 Hash-Based Navigation</h3>
+          <p>Deep linking via URL hash (#explainer, #manifesto) for bookmarkable pages.</p>
+        </div>
+        <div class="signal">
+          <h3>⚡ Reactive UI</h3>
+          <p>Navigation and content viewer built with front.js reactivity primitives.</p>
+        </div>
+        <div class="signal">
+          <h3>🚀 Static Deployment</h3>
+          <p>Deploy anywhere—GitHub Pages, Netlify, Vercel, or any static host.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="links">
+      <h2>Access the KB</h2>
+      <div class="cta">
+        <a href="../../KB/" class="button primary">View Live KB</a>
+        <a href="https://github.com/watthem/front-js/tree/main/KB" class="button secondary">View Source</a>
+      </div>
+      <p style="text-align: center; margin-top: 1.5rem; color: #666;">
+        <strong>Note:</strong> The KB requires a static server to run locally.
+        <br>Use <code>back-js</code>, Python's SimpleHTTPServer, or any static file server.
+      </p>
+    </section>
+
+    <section class="code-example">
+      <h2>How to Run Locally</h2>
+      <div class="code-grid">
+        <div class="code-block">
+          <h3>Option 1: Using back-js</h3>
+          <pre><code>cd back-js
+npm start
+
+# KB available at http://localhost:3000/KB/</code></pre>
+        </div>
+
+        <div class="code-block">
+          <h3>Option 2: Static Server</h3>
+          <pre><code># Python
+python3 -m http.server 8000
+
+# Node.js
+npx serve .
+
+# Then navigate to /KB/</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="code-example" id="gotchas">
+      <h2>Common Gotchas</h2>
+      <div class="code-block">
+        <h3>"Component not registered" Error</h3>
+        <p>If you see <code>Component "NavBar" not registered</code> in the console:</p>
+        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
+          <li><strong>Missing Script Tags:</strong> Ensure <code>app.js</code> (and <code>front.js</code>) is included
+            on <strong>every HTML page</strong>. Since front.js is an MPA framework, scripts are not shared between
+            pages.</li>
+          <li><strong>Script Type:</strong> specific script tags must be <code>type="module"</code>.</li>
+        </ul </div>
+    </section>
+
+
+    <footer class="footer">
+      <p>
+        <a href="../">Home</a> |
+        <a href="../examples/">Examples</a> |
+        <a href="https://github.com/watthem/front-js">GitHub</a>
+      </p>
+      <p class="license">ISC License</p>
+    </footer>
+  </div>
+
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+
+  <!-- Load front.js -->
+  <script type="module" src="../app.js"></script>
+</body>
+
+</html>

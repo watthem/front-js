@@ -4,6 +4,13 @@
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",
   "main": "./src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/front-js/front-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/front-js/front-js/issues"
+  },
   "exports": {
     ".": {
       "import": "./src/index.js",
@@ -17,6 +24,9 @@
     "CONTRIBUTING.md"
   ],
   "scripts": {
+    "dev": "npm run dev:back",
+    "dev:back": "cd back-js && npm run dev",
+    "start:back": "cd back-js && npm start",
     "build": "node build.config.js",
     "build:check": "node build.config.js --check-size",
     "test": "vitest",

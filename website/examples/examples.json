@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Metadata for front.js examples including runtime compatibility",
+  "examples": [
+    {
+      "id": "calculator",
+      "title": "Calculator",
+      "description": "Derived state and complex event handling",
+      "htmlFile": "calculator.html",
+      "jsFile": "calculator.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "calc", "html"],
+      "browserAPIs": [],
+      "tested": true,
+      "notes": "Pure JavaScript math operations, no external APIs required"
+    },
+    {
+      "id": "todo",
+      "title": "Todo List",
+      "description": "Simple CRUD with input handling and list rendering",
+      "htmlFile": "todo.html",
+      "jsFile": "todo-app.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "html"],
+      "browserAPIs": [],
+      "tested": true,
+      "notes": "XSS-safe input handling with uhtml escaping"
+    },
+    {
+      "id": "github-user",
+      "title": "GitHub User Search",
+      "description": "Async data fetching with the \"Active Flag\" pattern to prevent race conditions",
+      "htmlFile": "github-user.html",
+      "jsFile": "github-user.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": true,
+        "bun": true
+      },
+      "features": ["val", "run", "html"],
+      "browserAPIs": ["fetch"],
+      "tested": false,
+      "notes": "Uses fetch API which is available in modern runtimes. Demonstrates async cleanup patterns."
+    },
+    {
+      "id": "walking-timer",
+      "title": "Walking Timer",
+      "description": "Lifecycle management (cleanup), audio feedback, and timers",
+      "htmlFile": "walking-timer.html",
+      "jsFile": "walking-timer.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "calc", "run", "html"],
+      "browserAPIs": ["setInterval", "AudioContext"],
+      "tested": false,
+      "notes": "Requires Web Audio API for sound feedback. setInterval cleanup demonstrates run() lifecycle."
+    },
+    {
+      "id": "pixel-art",
+      "title": "Pixel Art",
+      "description": "Shared state, multi-island communication, and canvas rendering",
+      "htmlFile": "pixel-art.html",
+      "jsFile": "pixel-art.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "calc", "run", "html"],
+      "browserAPIs": ["localStorage"],
+      "tested": false,
+      "notes": "Uses localStorage for persistence. Demonstrates multiple islands sharing state via global vals."
+    },
+    {
+      "id": "gm-board",
+      "title": "GM Board",
+      "description": "Forms, auth flow simulation, and nested state",
+      "htmlFile": "gm-board.html",
+      "jsFile": "gm-board.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "calc", "run", "html"],
+      "browserAPIs": ["setInterval", "Date", "alert"],
+      "tested": false,
+      "notes": "Complex nested state example with periodic updates. Uses alert for simple validation."
+    },
+    {
+      "id": "navbar",
+      "title": "NavBar",
+      "description": "Responsive navigation bar with mobile toggle",
+      "htmlFile": "navbar.html",
+      "jsFile": "../components/NavBar.js",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "html"],
+      "browserAPIs": [],
+      "tested": true,
+      "notes": "Responsive component with mobile menu toggle. Used throughout the website."
+    }
+  ]
+}

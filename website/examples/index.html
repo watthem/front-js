@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>front.js - Examples</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
+
 <body>
-  <div class="container">
+  <div data-island data-component="NavBar" data-props='{
+      "links": [
+        {"label": "Home", "url": "/"},
+        {"label": "Examples", "url": "/examples/index.html"},
+        {"label": "Docs", "url": "/KB/"},
+        {"label": "GitHub", "url": "https://github.com/front-js/front-js"}
+      ]
+    }'></div>
+  <div class="container" style="padding-top: 60px;">
     <header class="hero">
       <h1>Examples</h1>
       <p class="tagline">See front.js in action</p>
       <p class="description">
-        A collection of interactive examples demonstrating the power of <strong>val</strong>, <strong>run</strong>, and <strong>calc</strong>.
+        A collection of interactive examples demonstrating the power of <strong>val</strong>, <strong>run</strong>, and
+        <strong>calc</strong>.
       </p>
       <div class="cta">
         <a href="../" class="button secondary">Back to Home</a>
@@ -23,11 +34,15 @@
     <section class="intent-signals">
       <h2>Interactive Demos</h2>
       <div class="signals-grid">
-        
+
         <a href="todo.html" class="link-card">
           <div class="card-icon">
             <!-- Check square -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 11 12 14 22 4" />
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+            </svg>
           </div>
           <h3>Todo List</h3>
           <p>Simple CRUD with input handling and list rendering.</p>
@@ -36,7 +51,17 @@
         <a href="calculator.html" class="link-card">
           <div class="card-icon">
             <!-- Calculator -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="16" y1="18" x2="16" y2="18"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2" />
+              <line x1="8" y1="6" x2="16" y2="6" />
+              <line x1="16" y1="14" x2="16" y2="14" />
+              <line x1="16" y1="18" x2="16" y2="18" />
+              <line x1="8" y1="14" x2="8" y2="14" />
+              <line x1="8" y1="18" x2="8" y2="18" />
+              <line x1="12" y1="14" x2="12" y2="14" />
+              <line x1="12" y1="18" x2="12" y2="18" />
+            </svg>
           </div>
           <h3>Calculator</h3>
           <p>Derived state and complex event handling.</p>
@@ -45,7 +70,12 @@
         <a href="pixel-art.html" class="link-card">
           <div class="card-icon">
             <!-- Grid / Art -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M3 9h18" />
+              <path d="M9 21V9" />
+            </svg>
           </div>
           <h3>Pixel Art</h3>
           <p>Shared state, multi-island communication, and canvas rendering.</p>
@@ -54,7 +84,18 @@
         <a href="gm-board.html" class="link-card">
           <div class="card-icon">
             <!-- Sun / GM -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2" />
+              <path d="M12 21v2" />
+              <path d="M4.22 4.22l1.42 1.42" />
+              <path d="M18.36 18.36l1.42 1.42" />
+              <path d="M1 12h2" />
+              <path d="M21 12h2" />
+              <path d="M4.22 19.78l1.42-1.42" />
+              <path d="M18.36 5.64l1.42-1.42" />
+            </svg>
           </div>
           <h3>GM Board</h3>
           <p>Forms, auth flow simulation, and nested state.</p>
@@ -63,16 +104,38 @@
         <a href="walking-timer.html" class="link-card">
           <div class="card-icon">
             <!-- Watch / Timer -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
           </div>
           <h3>Walking Timer</h3>
           <p>Lifecycle management (cleanup), audio feedback, and timers.</p>
         </a>
 
+        <a href="navbar.html" class="link-card">
+          <div class="card-icon">
+            <!-- Menu / Nav -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </div>
+          <h3>NavBar</h3>
+          <p>Responsive navigation bar with mobile toggle.</p>
+        </a>
+
         <a href="github-user.html" class="link-card">
           <div class="card-icon">
             <!-- User / GitHub -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
           </div>
           <h3>GitHub User Search</h3>
           <p>Async data fetching with the "Active Flag" pattern to prevent race conditions.</p>
@@ -87,8 +150,21 @@
         <a href="../../KB/">Documentation</a> |
         <a href="https://github.com/watthem/front-js">GitHub</a>
       </p>
-      <p class="license">MIT License</p>
+      <p class="license">ISC License</p>
     </footer>
   </div>
+
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+
+  <!-- Load front.js -->
+  <script type="module" src="../app.js"></script>
 </body>
+
 </html>
