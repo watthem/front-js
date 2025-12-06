@@ -30,20 +30,33 @@ We adhere to the [Standard Schema](https://standardschema.dev) specification. `f
   - We check for the `~standard` property on the validator object.
 - **Benefit:** Users can use Valibot (tiny), Zod (popular), or ArkType (fast) interchangeably.
 
-**Example Vision:**
+**Example Usage (v0.0.1+):**
 
 ```javascript
-import { object, string } from 'valibot'; // or zod
-import { hydrate } from 'front.js';
+import { object, string } from 'valibot'; // or zod or arktype
+import { register, hydrate } from 'front.js';
 
-// The framework doesn't care which library this is
-const schema = object({
+// Define your schema with any Standard Schema-compliant validator
+const propsSchema = object({
   id: string(),
+  count: number(),
 });
 
-// We validate the JSON props against this schema before hydrating
-hydrate(root, { schema });
+// Register component with optional schema validation
+register('Counter', CounterComponent, {
+  schema: propsSchema
+});
+
+// Hydrate validates props before passing to component
+await hydrate();
 ```
+
+**Status:** ✅ Implemented in v0.0.1
+- `register()` accepts optional `schema` in options parameter
+- `hydrate()` validates props using `schema['~standard'].validate()`
+- Supports both sync and async validation
+- Failed validation aborts hydration for that island (fail-safe)
+- Successful validation can transform props (e.g., string → Date)
 
 ---
 

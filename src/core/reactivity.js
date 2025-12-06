@@ -77,7 +77,15 @@ export function run(fn) {
     try {
       // Execute run and capture cleanup function (if returned)
       const result = fn();
-      cleanup = typeof result === 'function' ? result : undefined;
+      // Check for Promise return (async functions not supported)
+      if (result instanceof Promise || (result && typeof result.then === 'function')) {
+        console.warn(
+          '[front.js] run() returned a Promise. Use an IIFE instead: run(() => { (async () => {...})(); })'
+        );
+        cleanup = undefined;
+      } else {
+        cleanup = typeof result === 'function' ? result : undefined;
+      }
     } catch (error) {
       console.error('[front.js] Error in run:', error);
       // Don't re-throw - isolate errors so one failing run doesn't break others

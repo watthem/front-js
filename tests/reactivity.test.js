@@ -122,6 +122,34 @@ describe('reactivity', () => {
       s(5);
       expect(otherRunExecuted).toBe(true);
     });
+
+    it('warns when async function is used directly', () => {
+      const consoleWarn = console.warn;
+      const warnings = [];
+      console.warn = (...args) => warnings.push(args);
+      
+      run(async () => {
+        await Promise.resolve();
+      });
+      
+      expect(warnings.length).toBeGreaterThan(0);
+      expect(warnings[0][0]).toContain('run() returned a Promise');
+      
+      console.warn = consoleWarn;
+    });
+
+    it('does not warn for cleanup functions', () => {
+      const consoleWarn = console.warn;
+      const warnings = [];
+      console.warn = (...args) => warnings.push(args);
+      
+      run(() => {
+        return () => {}; // Valid cleanup function
+      });
+      
+      expect(warnings.length).toBe(0);
+      console.warn = consoleWarn;
+    });
   });
 
   describe('calc', () => {

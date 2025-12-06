@@ -1,5 +1,5 @@
 {
-  "name": "front",
+  "name": "front-js",
   "version": "0.0.1",
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",

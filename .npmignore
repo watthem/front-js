@@ -1,0 +1,43 @@
+# Build artifacts
+node_modules/
+*.log
+*.tgz
+
+# Development files
+tests/
+examples/
+.vscode/
+.repomix/
+
+# Documentation (keep only essential docs via package.json files array)
+docs/
+wiki/
+community/
+KB/
+
+# Config files
+.eslintrc*
+.prettierrc*
+vitest.config.js
+build.config.js
+repomix.config.json
+scripts/
+
+# CI/CD
+.github/
+
+# Editor files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Back-js server
+back-js/
+
+# Website
+website/
+
+# Misc
+.env
+.env.local

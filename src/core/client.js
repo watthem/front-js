@@ -15,11 +15,13 @@ function isValidComponentName(name) {
 }
 
 /**
- * Registers a component function by name for hydration.
+ * Registers a component function by name for hydration with optional schema validation.
  * @param {string} name - Component name (must be alphanumeric)
  * @param {Function} componentFn - Component function that accepts props and returns render function
+ * @param {Object} [options] - Configuration options
+ * @param {Object} [options.schema] - Standard Schema compliant validator
  */
-export function register(name, componentFn) {
+export function register(name, componentFn, options = {}) {
   if (!isValidComponentName(name)) {
     console.error(
       `[front.js] Invalid component name "${name}". Component names must be alphanumeric (with optional underscores/hyphens).`
@@ -30,24 +32,29 @@ export function register(name, componentFn) {
     console.error(`[front.js] Component "${name}" must be a function.`);
     return;
   }
-  registry.set(name, componentFn);
+  registry.set(name, {
+    componentFn,
+    schema: options.schema
+  });
 }
 
 /**
  * Hydrates all island components found in the DOM.
+ * Supports async validation if schema returns a Promise.
  * Scans for elements with `data-island` attribute and initializes components.
  * @param {HTMLElement} root - Root element to scan (defaults to document.body)
+ * @returns {Promise<void>}
  */
-export function hydrate(root = document.body) {
+export async function hydrate(root = document.body) {
   const islands = root.querySelectorAll('[data-island]');
 
-  islands.forEach((island) => {
+  for (const island of islands) {
     const name = island.dataset.component;
 
     // Security: Validate component name format
     if (!name) {
       console.warn(`[front.js] Island element missing "data-component" attribute.`, island);
-      return;
+      continue;
     }
 
     if (!isValidComponentName(name)) {
@@ -55,15 +62,17 @@ export function hydrate(root = document.body) {
         `[front.js] Invalid component name "${name}" on island element. Skipping.`,
         island
       );
-      return;
+      continue;
     }
 
     // Security: Validate component existence
-    const Component = registry.get(name);
-    if (!Component) {
+    const entry = registry.get(name);
+    if (!entry) {
       console.warn(`[front.js] Component "${name}" not registered. Skipping island.`, island);
-      return;
+      continue;
     }
+
+    const { componentFn, schema } = entry;
 
     // Security: Safe JSON parsing
     let props = {};
@@ -75,15 +84,36 @@ export function hydrate(root = document.body) {
         e,
         island
       );
-      return;
+      continue;
+    }
+
+    // Validate schema if provided
+    if (schema && schema['~standard']) {
+      try {
+        const result = schema['~standard'].validate(props);
+        const resolved = result instanceof Promise ? await result : result;
+
+        if (resolved.issues) {
+          console.error(
+            `[front.js] Schema validation failed for "${name}":`,
+            resolved.issues,
+            island
+          );
+          continue;
+        }
+        props = resolved.value;
+      } catch (err) {
+        console.error(`[front.js] Validator Error for "${name}":`, err);
+        continue;
+      }
     }
 
     // Initialize component
     try {
-      const renderFn = Component(props);
+      const renderFn = componentFn(props);
       if (typeof renderFn !== 'function') {
         console.error(`[front.js] Component "${name}" did not return a render function.`, island);
-        return;
+        continue;
       }
       defineComponent(renderFn, island);
 
@@ -93,5 +123,5 @@ export function hydrate(root = document.body) {
       console.error(`[front.js] Error initializing component "${name}".`, e, island);
       // Continue with other islands even if one fails
     }
-  });
+  }
 }

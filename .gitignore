@@ -53,3 +53,4 @@ repomix-output.xml
 pnpm-lock.yaml
 yarn.lock
 
+.agents/

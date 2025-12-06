@@ -202,5 +202,119 @@ describe('client', () => {
       console.error = consoleError;
     });
   });
+
+  describe('Schema Validation', () => {
+    // Helper to create mock Standard Schema validators
+    const createValidator = (shouldPass, transformValue) => ({
+      '~standard': {
+        version: 1,
+        vendor: 'mock',
+        validate: (value) => {
+          if (shouldPass) {
+            return { value: transformValue || value };
+          }
+          return { issues: [{ message: 'Validation failed' }] };
+        }
+      }
+    });
+
+    it('hydrates when validation passes', async () => {
+      const Component = (props) => () => html`<div>${props.txt}</div>`;
+      
+      register('ValidComp', Component, {
+        schema: createValidator(true)
+      });
+
+      const island = document.createElement('div');
+      island.setAttribute('data-island', '');
+      island.setAttribute('data-component', 'ValidComp');
+      island.setAttribute('data-props', JSON.stringify({ txt: 'Safe' }));
+      document.body.appendChild(island);
+
+      await hydrate();
+
+      expect(island.textContent).toContain('Safe');
+      expect(island.hasAttribute('data-island')).toBe(false);
+    });
+
+    it('aborts hydration when validation fails', async () => {
+      const Component = () => () => html`<div>Should Not Render</div>`;
+      const consoleError = console.error;
+      const errors = [];
+      console.error = (...args) => errors.push(args);
+
+      register('InvalidComp', Component, {
+        schema: createValidator(false)
+      });
+
+      const island = document.createElement('div');
+      island.setAttribute('data-island', '');
+      island.setAttribute('data-component', 'InvalidComp');
+      island.setAttribute('data-props', '{}');
+      document.body.appendChild(island);
+
+      await hydrate();
+
+      // Island marker should remain (hydration skipped)
+      expect(island.hasAttribute('data-island')).toBe(true);
+      expect(island.innerHTML).toBe(''); // Nothing rendered
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0][0]).toContain('Schema validation failed');
+      
+      console.error = consoleError;
+    });
+
+    it('uses transformed values from schema', async () => {
+      const Component = (props) => () => html`<div>${props.upper}</div>`;
+      
+      // Schema that transforms "hello" -> "HELLO"
+      const transformSchema = {
+        '~standard': {
+          version: 1,
+          vendor: 'mock',
+          validate: (val) => ({ value: { upper: val.text.toUpperCase() } })
+        }
+      };
+
+      register('TransformComp', Component, { schema: transformSchema });
+
+      const island = document.createElement('div');
+      island.setAttribute('data-island', '');
+      island.setAttribute('data-component', 'TransformComp');
+      island.setAttribute('data-props', JSON.stringify({ text: 'hello' }));
+      document.body.appendChild(island);
+
+      await hydrate();
+
+      expect(island.textContent).toContain('HELLO');
+    });
+
+    it('handles async schema validation', async () => {
+      const Component = (props) => () => html`<div>${props.data}</div>`;
+      
+      const asyncSchema = {
+        '~standard': {
+          version: 1,
+          vendor: 'mock',
+          validate: async (value) => {
+            await Promise.resolve();
+            return { value };
+          }
+        }
+      };
+
+      register('AsyncComp', Component, { schema: asyncSchema });
+
+      const island = document.createElement('div');
+      island.setAttribute('data-island', '');
+      island.setAttribute('data-component', 'AsyncComp');
+      island.setAttribute('data-props', JSON.stringify({ data: 'async' }));
+      document.body.appendChild(island);
+
+      await hydrate();
+
+      expect(island.textContent).toContain('async');
+    });
+  });
 });
 
