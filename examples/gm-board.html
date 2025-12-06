@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GM Board - front.js</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      padding: 2rem;
+    }
+    h1 {
+      color: #333;
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Login Form */
+    .login-form {
+      text-align: center;
+      padding: 2rem;
+    }
+    .login-form input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .login-form input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    /* Buttons */
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Header */
+    .board-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    .welcome {
+      font-size: 1.25rem;
+      color: #333;
+    }
+    .logout-btn {
+      background: #dc3545;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    .logout-btn:hover {
+      background: #c82333;
+    }
+
+    /* GM Button */
+    .gm-button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .gm-button:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5568d3 0%, #65408b 100%);
+    }
+
+    /* User List */
+    .user-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .user-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .user-card:hover {
+      background: #e9ecef;
+    }
+    .user-emoji {
+      font-size: 2rem;
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .user-name {
+      font-weight: 600;
+      color: #333;
+    }
+    .user-time {
+      font-size: 0.875rem;
+      color: #666;
+    }
+    .status-indicator {
+      font-size: 1rem;
+    }
+    .kudos-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+    }
+    .kudos-count {
+      font-size: 0.875rem;
+      color: #666;
+      font-weight: 600;
+    }
+    .kudos-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      background: #28a745;
+    }
+    .kudos-btn:hover:not(:disabled) {
+      background: #218838;
+    }
+    .kudos-btn:disabled {
+      background: #ccc;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .user-card {
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+      }
+      .kudos-section {
+        grid-column: 2;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>☀️ GM Board</h1>
+    <p class="subtitle">Say good morning and spread some kudos</p>
+
+    <!-- Island boundary -->
+    <div
+      data-island
+      data-component="GMBoard"
+      data-props='{"defaultEmoji":"☀️"}'
+    ></div>
+  </div>
+
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+
+  <!-- Load front.js + component -->
+  <script type="module" src="./gm-board.js"></script>
+</body>
+</html>
