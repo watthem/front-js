@@ -1,5 +1,5 @@
 import { html } from 'uhtml';
-import { val, register, hydrate } from '../src/index.js';
+import { val, register, hydrate } from '../front.esm.js';
 
 /**
  * TodoApp Component

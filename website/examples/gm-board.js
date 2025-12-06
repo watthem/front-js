@@ -1,5 +1,5 @@
 import { html } from 'uhtml';
-import { val, calc, run, register, hydrate } from '../src/index.js';
+import { val, calc, run, register, hydrate } from '../front.esm.js';
 
 /**
  * GMBoard Component

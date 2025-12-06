@@ -1,0 +1,22 @@
+{
+  "name": "back-js",
+  "version": "0.0.1",
+  "description": "Minimal server for front.js - serves static files and markdown content",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": [
+    "server",
+    "static",
+    "markdown",
+    "ssr"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

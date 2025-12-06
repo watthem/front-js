@@ -240,6 +240,8 @@ npm run format
 
 See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for development guidelines.
 
+See [`DEVELOPMENT.md`](./DEVELOPMENT.md) for how to run the website and KB locally, and deployment instructions.
+
 ## License
 
 ISC

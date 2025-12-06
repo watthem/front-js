@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>front.js - The secure-by-default, islands-first micro-framework</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>front.js</h1>
+      <p class="tagline">The secure-by-default, islands-first micro-framework</p>
+    </header>
+    
+    <nav class="navigation" data-island data-component="Navigation" data-props='{}'>
+      <!-- Server-rendered navigation for immediate display -->
+      <button class="nav-button active">When to Use front.js</button>
+      <button class="nav-button">Manifesto</button>
+      <button class="nav-button">Limitations</button>
+    </nav>
+    
+    <main class="main">
+      <noscript>
+        <div class="error">
+          <p><strong>JavaScript is required.</strong> Please enable JavaScript in your browser to view this site.</p>
+        </div>
+      </noscript>
+      <div data-island data-component="MarkdownViewer" data-props='{}'>
+        <!-- Server-rendered initial content for immediate display -->
+        <div class="markdown-viewer">
+          <div class="markdown-content">
+            <h1>When to Use front.js</h1>
+            <p><strong>December 2025</strong> — React Server Components had a <a href="https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components">CVSS 10.0 remote code execution vulnerability</a> (CVE-2025-55182). React patched it correctly. This isn't about blaming React—it's a reminder of a broader truth:</p>
+            <p><strong>Any system that serializes executable intent across a trust boundary expands its attack surface.</strong></p>
+            <p>React Server Components deserialize payloads sent to Server Function endpoints. That deserialization layer is where the vulnerability lived. The more magic you have, the more ways it can break.</p>
+            <p>This got us thinking: <em>what if we removed that category of risk entirely?</em></p>
+            <h2>Libraries vs Frameworks: A Quick Distinction</h2>
+            <p>Before we dive in, let's clarify the landscape:</p>
+            <ul>
+              <li><strong>Libraries</strong> (React, Vue, Svelte): UI rendering primitives you compose into your app</li>
+              <li><strong>Frameworks</strong> (Next.js, Redwood, Remix): Full-stack solutions with routing, data fetching, build tools, and more</li>
+            </ul>
+            <p>front.js is a <strong>micro-framework for hydration</strong>—it's designed to complement, not replace, these tools. If you're building with Next.js or Redwood, you can absolutely use front.js for specific interactive islands while keeping your framework for routing, SSR, and the rest of your app.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer class="footer">
+      <p>
+        <a href="https://github.com/watthem/front-js">GitHub</a> |
+        <a href="../README.md">Documentation</a> |
+        <a href="../website/examples/">Examples</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+  
+  <!-- Load marked library for markdown parsing (must load before app.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+  
+  <!-- Load front.js + components -->
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

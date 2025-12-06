@@ -1,5 +1,5 @@
 import { html } from 'uhtml';
-import { val, calc, register, hydrate } from '../src/index.js';
+import { val, calc, register, hydrate } from '../front.esm.js';
 
 /**
  * Calculator Component
