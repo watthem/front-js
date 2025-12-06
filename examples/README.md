@@ -2,6 +2,8 @@
 
 This directory contains example implementations demonstrating front.js features.
 
+> **Note:** Some examples illustrate advanced patterns that surface underlying limitations of uhtml/templates (e.g., nested array rendering in pixel-art). See [docs/LIMITATIONS.md](../docs/LIMITATIONS.md) for guidance and workarounds.
+
 ## Todo App
 
 The `todo-app.js` example demonstrates:

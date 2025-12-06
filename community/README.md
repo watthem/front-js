@@ -24,6 +24,14 @@ If you have feedback, insights, or discoveries about front.js:
 
 - `FEEDBACK.md` - User feedback from real-world testing (GM Board example)
 
+## Related Documentation
+
+Before reporting issues or feedback, check these resources:
+
+- **[LIMITATIONS.md](../docs/LIMITATIONS.md)** - Known constraints, trade-offs, and intentional design decisions
+- **[FAQ.md](../wiki/FAQ.md)** - Common questions and answers
+- **[STANDARDS.md](../wiki/STANDARDS.md)** - Design philosophy and principles
+
 ---
 
 **Note**: This directory is for historical reference. For active discussions, please use GitHub Discussions or Issues.

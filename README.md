@@ -187,6 +187,15 @@ See [`wiki/API.md`](./wiki/API.md) for complete API documentation.
 - **`html\`template\``** - Safe template literal (from uhtml)
 - **`render(container, template)`** - Render template (from uhtml)
 
+## Limitations
+
+front.js is designed for server-rendered apps with Islands Architecture. See [`docs/LIMITATIONS.md`](./docs/LIMITATIONS.md) for:
+
+- Known constraints and trade-offs
+- When NOT to use front.js
+- Performance considerations
+- Workarounds for common issues
+
 ## Security Model
 
 `front.js` assumes the HTML is the Source of Truth.

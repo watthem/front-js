@@ -79,8 +79,25 @@ If the browser has a native way to do it, we use it. We do not reinvent the whee
 - **Required Pattern:** Explicit `register('Name', Component)` calls.
 - **Why:** This ensures that a developer reading `client.js` knows _exactly_ which components are included in the bundle, making the app auditable and secure.
 
-<!-- end list -->
+---
 
-```
+## 6\. The "Constraints as Features" Standard
 
-```
+**Insight:** Limitations aren't bugs to fix—they're intentional design decisions.
+
+front.js embraces constraints to maintain focus, security, and simplicity:
+
+- **<5KB size budget** - Forces prioritization of essential features only
+- **No build step** - Eliminates entire class of tooling complexity
+- **Islands only** - Prevents scope creep into full SPA territory
+- **Props are static** - Simplifies hydration, prevents server-client state sync issues
+- **No routing** - Server handles routing; client handles interactivity
+
+**Standard:** Before adding a feature, ask:
+1. Does this violate a core constraint?
+2. Can users solve this with composition instead?
+3. Does this bloat the bundle size?
+
+If the answer to any is "yes," reject the feature or document it as a user-space pattern.
+
+**See Also:** [`LIMITATIONS.md`](../docs/LIMITATIONS.md) documents all constraints and trade-offs in detail.

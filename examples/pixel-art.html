@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>front.js - Collaborative Pixel Art</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #1a1a2e;
+      color: #eee;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .page-header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .page-header p {
+      margin: 0;
+      color: #999;
+    }
+    
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    /* Canvas Island */
+    .pixel-canvas-container {
+      background: #16213e;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .canvas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .canvas-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    
+    .color-picker-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .color-picker-group label {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    
+    .color-picker-group input[type="color"] {
+      width: 50px;
+      height: 40px;
+      border: 2px solid #0f3460;
+      border-radius: 8px;
+      cursor: pointer;
+      background: none;
+    }
+    
+    .btn-clear {
+      padding: 0.5rem 1rem;
+      background: #e94560;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    
+    .btn-clear:hover {
+      background: #ff6b8a;
+      transform: translateY(-2px);
+    }
+    
+    .pixel-grid {
+      display: grid;
+      background: #0f3460;
+      padding: 2px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      justify-content: center;
+    }
+    
+    .pixel {
+      cursor: crosshair;
+      transition: opacity 0.1s;
+    }
+    
+    .pixel:hover {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+    }
+    
+    .canvas-info {
+      text-align: center;
+      color: #999;
+      font-size: 0.85rem;
+    }
+    
+    .canvas-info p {
+      margin: 0;
+    }
+    
+    /* User List Island */
+    .user-list {
+      background: #16213e;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .user-list h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.25rem;
+    }
+    
+    .users {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: #0f3460;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .user-badge.pulse {
+      animation: pulse 0.5s ease;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+    }
+    
+    .user-color {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #1a1a2e;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .user-name {
+      flex: 1;
+      font-weight: 600;
+    }
+    
+    .ai-badge {
+      font-size: 0.9rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+    
+    /* Stats Island */
+    .pixel-stats {
+      background: #16213e;
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    
+    .pixel-stats h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.25rem;
+    }
+    
+    .pixel-stats h4 {
+      margin: 1.5rem 0 0.75rem 0;
+      font-size: 1rem;
+      color: #aaa;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .stat {
+      background: #0f3460;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .color-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      background: #0f3460;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+    
+    .color-swatch {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      border: 2px solid #1a1a2e;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .color-count {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        flex-direction: row;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .sidebar {
+        flex-direction: column;
+      }
+      
+      .page-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>🎨 Collaborative Pixel Art</h1>
+    <p>Three islands, one shared canvas. Watch AI artists join and draw alongside you!</p>
+  </div>
+  
+  <div class="layout">
+    <div class="main-content">
+      <!-- Canvas Island -->
+      <div 
+        data-island 
+        data-component="PixelCanvas"
+        data-props='{"size":32,"pixelSize":12,"color":"#667eea"}'
+      ></div>
+    </div>
+    
+    <div class="sidebar">
+      <!-- User List Island -->
+      <div 
+        data-island 
+        data-component="UserList"
+        data-props='{}'
+      ></div>
+      
+      <!-- Stats Island -->
+      <div 
+        data-island 
+        data-component="PixelStats"
+        data-props='{}'
+      ></div>
+    </div>
+  </div>
+  
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+  
+  <!-- Load front.js + components -->
+  <script type="module" src="./pixel-art.js"></script>
+</body>
+</html>

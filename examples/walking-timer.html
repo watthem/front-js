@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>front.js - Progressive Walking Timer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      min-height: 100vh;
+    }
+    
+    .walking-timer {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .timer-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .timer-header h2 {
+      margin: 0 0 0.5rem 0;
+      color: #1976d2;
+      font-size: 1.75rem;
+    }
+    
+    .method-info {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .phase-indicator {
+      text-align: center;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .phase-indicator.slow {
+      background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+    }
+    
+    .phase-indicator.fast {
+      background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+    }
+    
+    .phase-emoji {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .phase-label {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    
+    .timer-display {
+      margin-bottom: 2rem;
+    }
+    
+    .time-remaining {
+      font-size: 4rem;
+      font-weight: 300;
+      text-align: center;
+      color: #333;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-bar {
+      height: 12px;
+      background: #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%);
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1976d2;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .completion-message {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #ffd54f 0%, #ffca28 100%);
+      border-radius: 15px;
+      margin-bottom: 2rem;
+    }
+    
+    .completion-emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .completion-message h3 {
+      margin: 0 0 0.5rem 0;
+      color: #f57f17;
+      font-size: 1.5rem;
+    }
+    
+    .completion-message p {
+      margin: 0;
+      color: #f57f17;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .btn-start {
+      background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+      color: white;
+    }
+    
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(67, 160, 71, 0.4);
+    }
+    
+    .btn-pause {
+      background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      color: white;
+    }
+    
+    .btn-pause:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 124, 0, 0.4);
+    }
+    
+    .btn-reset {
+      background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+      color: #333;
+    }
+    
+    .btn-reset:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-skip {
+      background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+      color: white;
+    }
+    
+    .btn-skip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .info-section {
+      background: #f5f5f5;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+    
+    .info-section h3 {
+      margin: 0 0 1rem 0;
+      color: #1976d2;
+      font-size: 1.25rem;
+    }
+    
+    .info-section ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    
+    .info-section li {
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+      line-height: 1.6;
+      color: #555;
+    }
+    
+    .info-section li:last-child {
+      margin-bottom: 0;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .walking-timer {
+        padding: 1.5rem;
+      }
+      
+      .time-remaining {
+        font-size: 3rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn {
+        min-width: 100px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Island boundary -->
+  <div 
+    data-island 
+    data-component="WalkingTimer"
+    data-props='{"fastDuration":180,"slowDuration":180,"targetSets":5}'
+  ></div>
+  
+  <!-- Load uhtml from CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
+  }
+  </script>
+  
+  <!-- Load front.js + component -->
+  <script type="module" src="./walking-timer.js"></script>
+</body>
+</html>

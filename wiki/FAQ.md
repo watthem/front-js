@@ -326,12 +326,27 @@ front.js is designed to be learned in an afternoon, not a week.
 
 ---
 
+## "What are the limitations?"
+
+**Every tool has trade-offs. front.js is no exception.**
+
+See **[LIMITATIONS.md](../docs/LIMITATIONS.md)** for a comprehensive list of:
+- Known limitations and constraints
+- Performance considerations
+- What front.js is NOT designed for
+- When to use a different tool
+
+Understanding limitations helps you make informed architectural decisions.
+
+---
+
 ## "I have more questions."
 
 Check the other documentation:
 - **[API Reference](./API.md)** - Complete API docs
 - **[BLUEPRINT](../docs/BLUEPRINT.md)** - Architecture deep-dive
 - **[STANDARDS](./STANDARDS.md)** - Design principles
+- **[LIMITATIONS](../docs/LIMITATIONS.md)** - Known constraints and trade-offs
 - **[Translation Guide](./TRANSLATIONS.md)** - Coming from React?
 
 Or open an issue on GitHub. We're here to help.
