@@ -14,7 +14,11 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "calc", "html"],
+      "features": [
+        "val",
+        "calc",
+        "html"
+      ],
       "browserAPIs": [],
       "tested": true,
       "notes": "Pure JavaScript math operations, no external APIs required"
@@ -31,13 +35,17 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "html"],
+      "features": [
+        "val",
+        "html"
+      ],
       "browserAPIs": [],
       "tested": true,
       "notes": "XSS-safe input handling with uhtml escaping"
     },
     {
       "id": "github-user",
+      "disabled": true,
       "title": "GitHub User Search",
       "description": "Async data fetching with the \"Active Flag\" pattern to prevent race conditions",
       "htmlFile": "github-user.html",
@@ -48,13 +56,20 @@
         "deno": true,
         "bun": true
       },
-      "features": ["val", "run", "html"],
-      "browserAPIs": ["fetch"],
+      "features": [
+        "val",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "fetch"
+      ],
       "tested": false,
       "notes": "Uses fetch API which is available in modern runtimes. Demonstrates async cleanup patterns."
     },
     {
       "id": "walking-timer",
+      "disabled": true,
       "title": "Walking Timer",
       "description": "Lifecycle management (cleanup), audio feedback, and timers",
       "htmlFile": "walking-timer.html",
@@ -65,13 +80,22 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "calc", "run", "html"],
-      "browserAPIs": ["setInterval", "AudioContext"],
+      "features": [
+        "val",
+        "calc",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "setInterval",
+        "AudioContext"
+      ],
       "tested": false,
       "notes": "Requires Web Audio API for sound feedback. setInterval cleanup demonstrates run() lifecycle."
     },
     {
       "id": "pixel-art",
+      "disabled": true,
       "title": "Pixel Art",
       "description": "Shared state, multi-island communication, and canvas rendering",
       "htmlFile": "pixel-art.html",
@@ -82,13 +106,21 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "calc", "run", "html"],
-      "browserAPIs": ["localStorage"],
+      "features": [
+        "val",
+        "calc",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "localStorage"
+      ],
       "tested": false,
       "notes": "Uses localStorage for persistence. Demonstrates multiple islands sharing state via global vals."
     },
     {
       "id": "gm-board",
+      "disabled": true,
       "title": "GM Board",
       "description": "Forms, auth flow simulation, and nested state",
       "htmlFile": "gm-board.html",
@@ -99,8 +131,17 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "calc", "run", "html"],
-      "browserAPIs": ["setInterval", "Date", "alert"],
+      "features": [
+        "val",
+        "calc",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "setInterval",
+        "Date",
+        "alert"
+      ],
       "tested": false,
       "notes": "Complex nested state example with periodic updates. Uses alert for simple validation."
     },
@@ -116,7 +157,10 @@
         "deno": false,
         "bun": false
       },
-      "features": ["val", "html"],
+      "features": [
+        "val",
+        "html"
+      ],
       "browserAPIs": [],
       "tested": true,
       "notes": "Responsive component with mobile menu toggle. Used throughout the website."
