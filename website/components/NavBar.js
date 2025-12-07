@@ -7,20 +7,20 @@ import { val } from '../front.esm.js';
  * Mobile-friendly responsive navigation bar
  */
 export function NavBar(props) {
-    const isOpen = val(false);
-    const links = props.links || [];
-    const currentPath = window.location.pathname;
-    
-    // Helper to check if link is active
-    const isLinkActive = (linkUrl) => {
-        if (linkUrl.startsWith('http')) return false; // External links
-        const normalizedCurrent = currentPath.replace(/\/$/, '') || '/';
-        const resolvedLink = new URL(linkUrl, window.location.href).pathname;
-        const normalizedLink = resolvedLink.replace(/\/$/, '') || '/';
-        return normalizedCurrent === normalizedLink;
-    };
+  const isOpen = val(false);
+  const links = props.links || [];
+  const currentPath = window.location.pathname;
 
-    return () => html`
+  // Helper to check if link is active
+  const isLinkActive = (linkUrl) => {
+    if (linkUrl.startsWith('http')) return false; // External links
+    const normalizedCurrent = currentPath.replace(/\/$/, '') || '/';
+    const resolvedLink = new URL(linkUrl, window.location.href).pathname;
+    const normalizedLink = resolvedLink.replace(/\/$/, '') || '/';
+    return normalizedCurrent === normalizedLink;
+  };
+
+  return () => html`
     <nav class="navbar">
       <div class="navbar-container">
         <a href="/" class="navbar-brand">
@@ -56,7 +56,7 @@ export function NavBar(props) {
           <a 
             href="${link.url}" 
             class="${`navbar-link ${isLinkActive(link.url) ? 'active' : ''}`}"
-            onclick=${() => isOpen(false)}
+            onclick=${() => setTimeout(() => isOpen(false), 50)}
           >
             ${link.label}
           </a>
