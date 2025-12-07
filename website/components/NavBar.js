@@ -10,6 +10,15 @@ export function NavBar(props) {
     const isOpen = val(false);
     const links = props.links || [];
     const currentPath = window.location.pathname;
+    
+    // Helper to check if link is active
+    const isLinkActive = (linkUrl) => {
+        if (linkUrl.startsWith('http')) return false; // External links
+        const normalizedCurrent = currentPath.replace(/\/$/, '') || '/';
+        const resolvedLink = new URL(linkUrl, window.location.href).pathname;
+        const normalizedLink = resolvedLink.replace(/\/$/, '') || '/';
+        return normalizedCurrent === normalizedLink;
+    };
 
     return () => html`
     <nav class="navbar">
@@ -33,7 +42,7 @@ export function NavBar(props) {
           ${links.map(link => html`
             <a 
               href="${link.url}" 
-              class="${`navbar-link ${currentPath.includes(link.url) ? 'active' : ''}`}"
+              class="${`navbar-link ${isLinkActive(link.url) ? 'active' : ''}`}"
             >
               ${link.label}
             </a>
@@ -46,7 +55,7 @@ export function NavBar(props) {
         ${links.map(link => html`
           <a 
             href="${link.url}" 
-            class="${`navbar-link ${currentPath.includes(link.url) ? 'active' : ''}`}"
+            class="${`navbar-link ${isLinkActive(link.url) ? 'active' : ''}`}"
             onclick=${() => isOpen(false)}
           >
             ${link.label}

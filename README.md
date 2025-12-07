@@ -2,6 +2,32 @@
 
 **The secure-by-default, islands-first micro-framework.**
 
+[![NPM Version](https://img.shields.io/npm/v/@watthem/front-js.svg)](https://www.npmjs.com/package/@watthem/front-js)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![CI](https://github.com/watthem/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/watthem/front-js/actions/workflows/ci.yml)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@watthem/front-js)](https://bundlephobia.com/package/@watthem/front-js)
+
+**🌐 [Website](https://frontjs.dev)** | **📚 [Documentation](https://frontjs.dev/KB/)** | **💻 [Examples](https://frontjs.dev/examples/)**
+
+## Table of Contents
+
+- [Install](#install)
+- [Hello World](#hello-world)
+- [Why front.js?](#why-frontjs)
+- [Core Concepts](#core-concepts)
+  - [Values](#values)
+  - [Components](#components)
+  - [Hydration](#hydration)
+  - [Lifecycle Cleanup](#lifecycle-cleanup)
+- [Examples](#examples)
+- [API Reference](#api-reference)
+- [Limitations](#limitations)
+- [Security Model](#security-model)
+- [Architecture](#architecture)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Install
 
 ```bash

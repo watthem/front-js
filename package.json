@@ -1,5 +1,5 @@
 {
-  "name": "front-js",
+  "name": "@watthem/front-js",
   "version": "0.0.1",
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",
@@ -57,6 +57,10 @@
   "author": "Matthew Hendricks <matthew.scott.hendricks@gmail.com>",
   "homepage": "https://frontjs.dev",
   "license": "ISC",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "esbuild": "^0.19.0",
     "vitest": "^1.0.0",

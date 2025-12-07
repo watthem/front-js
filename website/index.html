@@ -3,7 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="front.js is a secure-by-default micro-framework (<5KB) for hydrating server-rendered islands of HTML with fine-grained reactivity." />
     <title>front.js - Secure Islands Architecture</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://frontjs.dev/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://frontjs.dev/" />
+    <meta property="og:title" content="front.js - Secure Islands Architecture" />
+    <meta property="og:description" content="A <5KB micro-framework for hydrating server-rendered HTML with JSON-only data flow. Zero build, fine-grained reactivity." />
+    <meta property="og:image" content="https://frontjs.dev/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://frontjs.dev/" />
+    <meta name="twitter:title" content="front.js - Secure Islands Architecture" />
+    <meta name="twitter:description" content="A <5KB micro-framework for hydrating server-rendered HTML with JSON-only data flow. Zero build, fine-grained reactivity." />
+    <meta name="twitter:image" content="https://frontjs.dev/og-image.png" />
+    
+    <!-- Preconnect to CDN -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin />
+    <link rel="dns-prefetch" href="https://esm.sh" />
+    
+    <!-- Plausible Analytics -->
+    <script defer data-domain="frontjs.dev" src="https://plausible.io/js/script.js"></script>
+    
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -13,9 +43,9 @@
       data-component="NavBar"
       data-props='{
       "links": [
-        {"label": "Home", "url": "/"},
-        {"label": "Examples", "url": "/examples/index.html"},
-        {"label": "Docs", "url": "/KB/"},
+        {"label": "Home", "url": "./"},
+        {"label": "Examples", "url": "./examples/"},
+        {"label": "Docs", "url": "./KB/"},
         {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
       ]
     }'
@@ -323,6 +353,29 @@ hydrate();</code></pre>
         <p class="license">ISC License</p>
       </footer>
     </div>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "front.js",
+      "url": "https://frontjs.dev/",
+      "image": "https://frontjs.dev/og-image.png",
+      "description": "front.js is a secure-by-default micro-framework for hydrating server-rendered islands of HTML with fine-grained reactivity. Zero build step, <5KB runtime.",
+      "softwareVersion": "0.0.1",
+      "license": "ISC",
+      "applicationCategory": "WebApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "downloadUrl": "https://www.npmjs.com/package/@watthem/front-js",
+      "codeRepository": "https://github.com/watthem/front-js"
+    }
+    </script>
 
     <!-- Load uhtml from CDN -->
     <script type="importmap">

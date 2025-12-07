@@ -3,7 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Interactive examples demonstrating front.js: Todo list, Calculator, Pixel Art, and more. See islands architecture in action." />
     <title>front.js - Examples</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://frontjs.dev/examples/" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="../favicon.ico" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://frontjs.dev/examples/" />
+    <meta property="og:title" content="front.js Examples - Interactive Demos" />
+    <meta property="og:description" content="Interactive examples demonstrating front.js islands architecture: Todo list, Calculator, Pixel Art, and more." />
+    <meta property="og:image" content="https://frontjs.dev/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://frontjs.dev/examples/" />
+    <meta name="twitter:title" content="front.js Examples - Interactive Demos" />
+    <meta name="twitter:description" content="Interactive examples demonstrating front.js islands architecture: Todo list, Calculator, Pixel Art, and more." />
+    <meta name="twitter:image" content="https://frontjs.dev/og-image.png" />
+    
+    <!-- Preconnect to CDN -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin />
+    <link rel="dns-prefetch" href="https://esm.sh" />
+    
+    <!-- Plausible Analytics -->
+    <script defer data-domain="frontjs.dev" src="https://plausible.io/js/script.js"></script>
+    
     <link rel="stylesheet" href="../styles.css" />
   </head>
 
@@ -13,9 +43,9 @@
       data-component="NavBar"
       data-props='{
       "links": [
-        {"label": "Home", "url": "/"},
-        {"label": "Examples", "url": "/examples/index.html"},
-        {"label": "Docs", "url": "/KB/"},
+        {"label": "Home", "url": "../"},
+        {"label": "Examples", "url": "./"},
+        {"label": "Docs", "url": "../KB/"},
         {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
       ]
     }'

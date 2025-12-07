@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OG Image Generator - front.js</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f0f0;
+    }
+    .og-image {
+      width: 1200px;
+      height: 630px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      box-sizing: border-box;
+      position: relative;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .logo {
+      font-size: 120px;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+    }
+    .tagline {
+      font-size: 48px;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+    .features {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+    }
+    .feature {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 20px 30px;
+      border-radius: 12px;
+      color: white;
+      font-size: 28px;
+      font-weight: 500;
+    }
+    .indicator {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      background: #4CAF50;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="og-image">
+    <div class="indicator"></div>
+    <div class="logo">front.js</div>
+    <div class="tagline">Secure Islands Architecture</div>
+    <div class="features">
+      <div class="feature">🔒 Secure by Default</div>
+      <div class="feature">⚡ &lt;5KB Runtime</div>
+      <div class="feature">🏝️ Islands First</div>
+    </div>
+  </div>
+  <script>
+    console.log('Take a screenshot of this page at 1200x630 resolution');
+    console.log('Or use a tool like html2canvas to generate og-image.png');
+  </script>
+</body>
+</html>

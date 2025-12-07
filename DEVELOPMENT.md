@@ -52,22 +52,28 @@ npm run dev
 
 ## Deployment
 
-Both `website/` and `KB/` are pure static sites and can be deployed to any static hosting service.
+Both `website/` and `KB/` are pure static sites and can be deployed to Cloudflare Pages, Netlify, Vercel, or any static hosting service.
 
-### GitHub Pages
+### Cloudflare Pages (Recommended)
 
-#### Deploy Website
+The project is configured to deploy to Cloudflare Pages with the custom domain frontjs.dev.
 
-1. Push your code to GitHub
-2. Go to repository Settings → Pages
-3. Set source to `website/` directory
-4. Your site will be available at `https://watthem.github.io/front-js/`
+#### Deploy to Production
 
-#### Deploy KB (Separate Site)
+```bash
+# Deploy to production (master branch)
+npm run deploy:cf:prod
 
-You can deploy KB as a separate GitHub Pages site:
-1. Create a separate branch or repository for KB
-2. Or use GitHub Actions to deploy both
+# Or deploy current state (including uncommitted changes)
+npm run deploy:cf
+```
+
+The `website/` directory is deployed to https://frontjs.dev.
+
+**Configuration:**
+- Custom domain configured via `website/CNAME`
+- Deployment uses wrangler CLI
+- See `package.json` for deployment scripts
 
 ### Netlify
 

@@ -57,6 +57,14 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
    ```bash
    git checkout -b feat/your-feature-name
    ```
+   
+   **Branch Naming Convention:**
+   - `feat/` - New features
+   - `fix/` - Bug fixes
+   - `docs/` - Documentation changes
+   - `chore/` - Maintenance tasks
+   - `refactor/` - Code refactoring
+   - `test/` - Test additions or modifications
 
 3. **Make your changes:**
    - Follow existing code style
@@ -73,7 +81,24 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
    npm run format
    ```
 
-6. **Submit a PR:**
+6. **Commit with Conventional Commits:**
+   ```bash
+   # Format: <type>(<scope>): <subject>
+   git commit -m "feat(reactivity): add cleanup support to run"
+   git commit -m "fix(hydration): handle invalid JSON gracefully"
+   git commit -m "docs(readme): add table of contents"
+   ```
+   
+   **Commit Types:**
+   - `feat:` - New feature
+   - `fix:` - Bug fix
+   - `docs:` - Documentation only changes
+   - `style:` - Code style changes (formatting, semicolons, etc)
+   - `refactor:` - Code refactoring
+   - `test:` - Adding or updating tests
+   - `chore:` - Maintenance tasks (build, deps, etc)
+
+7. **Submit a PR:**
    - Include description of changes
    - Reference any related issues
    - Ensure CI passes
