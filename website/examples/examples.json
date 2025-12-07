@@ -8,6 +8,7 @@
       "description": "Derived state and complex event handling",
       "htmlFile": "calculator.html",
       "jsFile": "calculator.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -29,6 +30,7 @@
       "description": "Simple CRUD with input handling and list rendering",
       "htmlFile": "todo.html",
       "jsFile": "todo-app.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -50,6 +52,7 @@
       "description": "Async data fetching with the \"Active Flag\" pattern to prevent race conditions",
       "htmlFile": "github-user.html",
       "jsFile": "github-user.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -74,6 +77,7 @@
       "description": "Lifecycle management (cleanup), audio feedback, and timers",
       "htmlFile": "walking-timer.html",
       "jsFile": "walking-timer.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -100,6 +104,7 @@
       "description": "Shared state, multi-island communication, and canvas rendering",
       "htmlFile": "pixel-art.html",
       "jsFile": "pixel-art.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -125,6 +130,7 @@
       "description": "Forms, auth flow simulation, and nested state",
       "htmlFile": "gm-board.html",
       "jsFile": "gm-board.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -151,6 +157,7 @@
       "description": "Responsive navigation bar with mobile toggle",
       "htmlFile": "navbar.html",
       "jsFile": "../components/NavBar.js",
+      "status": "published",
       "runtime": {
         "browser": true,
         "node": false,
@@ -164,6 +171,24 @@
       "browserAPIs": [],
       "tested": true,
       "notes": "Responsive component with mobile menu toggle. Used throughout the website."
+    },
+    {
+      "id": "htmx-integration",
+      "title": "HTMX Integration",
+      "description": "Macro meets Micro: DOM swapping with proper cleanup patterns to prevent memory leaks",
+      "htmlFile": "htmx-integration.html",
+      "jsFile": "htmx-integration.js",
+      "status": "draft",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": ["val", "run", "html"],
+      "browserAPIs": ["setInterval", "CustomEvent"],
+      "tested": false,
+      "notes": "Demonstrates cleanup patterns for HTMX integration. Shows how to prevent memory leaks when DOM nodes are swapped. Includes global HTMX event listener setup."
     }
   ]
 }

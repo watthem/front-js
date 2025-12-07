@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demonstrates front.js + HTMX integration with proper cleanup patterns for memory leak prevention." />
+    <title>front.js + HTMX Integration</title>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://frontjs.dev/examples/htmx-integration.html" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="../favicon.ico" />
+    
+    <!-- Preconnect to CDNs -->
+    <link rel="preconnect" href="https://esm.sh" crossorigin />
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <link rel="dns-prefetch" href="https://esm.sh" />
+    <link rel="dns-prefetch" href="https://unpkg.com" />
+    
+    <link rel="stylesheet" href="../styles.css" />
+    
+    <style>
+      .demo-section {
+        background: var(--color-bg-light);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      .server-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      
+      .server-card {
+        background: var(--color-code-bg);
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        padding: 1rem;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      }
+      
+      .server-name {
+        color: var(--color-primary);
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+      
+      .server-uptime {
+        color: var(--color-text-light);
+        font-size: 0.9rem;
+      }
+      
+      .status-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-primary);
+        margin-right: 0.5rem;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      
+      .htmx-indicator {
+        color: var(--color-primary);
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      }
+      
+      .refresh-button {
+        background: var(--color-primary);
+        color: var(--color-bg);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        transition: all 0.2s ease;
+      }
+      
+      .refresh-button:hover {
+        background: var(--color-primary-dark);
+        transform: translateY(-2px);
+      }
+      
+      .refresh-button:active {
+        transform: translateY(0);
+      }
+      
+      .console-hint {
+        background: var(--color-code-bg);
+        border-left: 3px solid var(--color-primary);
+        padding: 1rem;
+        margin-top: 1rem;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.9rem;
+      }
+      
+      .console-hint code {
+        color: var(--color-primary);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      data-island
+      data-component="NavBar"
+      data-props='{
+      "links": [
+        {"label": "Home", "url": "../"},
+        {"label": "Examples", "url": "./"},
+        {"label": "Docs", "url": "../KB/"},
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
+      ]
+    }'
+    ></div>
+
+    <div class="container" style="padding-top: 60px">
+      <header class="hero">
+        <h1>HTMX Integration</h1>
+        <p class="tagline">Macro meets Micro: DOM Swapping with Cleanup</p>
+        <p class="description">
+          This example demonstrates how front.js components handle <strong>DOM thrashing</strong>
+          from macro-frameworks like HTMX without memory leaks.
+        </p>
+      </header>
+
+      <section class="demo-section">
+        <h2>Server Status Dashboard</h2>
+        <p>
+          Click "Refresh Server List" to simulate an HTMX swap. 
+          Watch the console to see cleanup functions being called.
+        </p>
+        
+        <button 
+          class="refresh-button"
+          onclick="simulateHTMXSwap()"
+        >
+          🔄 Refresh Server List
+        </button>
+        <span class="htmx-indicator" id="swap-indicator"></span>
+        
+        <div class="console-hint">
+          💡 <strong>Tip:</strong> Open DevTools Console (<code>F12</code>) to see cleanup logs
+        </div>
+        
+        <div id="server-container" class="server-list">
+          <!-- Islands will be hydrated here -->
+          <div
+            data-island
+            data-component="ServerUptime"
+            data-props='{"name": "web-prod-01", "region": "us-east-1"}'
+          ></div>
+          
+          <div
+            data-island
+            data-component="ServerUptime"
+            data-props='{"name": "web-prod-02", "region": "us-west-2"}'
+          ></div>
+          
+          <div
+            data-island
+            data-component="ServerUptime"
+            data-props='{"name": "api-prod-01", "region": "eu-central-1"}'
+          ></div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <h2>How It Works</h2>
+        <p>
+          <strong>The Problem:</strong> When HTMX (or similar libraries) swap DOM content, 
+          components with timers, event listeners, or other side effects can leak memory if not cleaned up.
+        </p>
+        <p>
+          <strong>The Solution:</strong> front.js attaches a <code>_front_dispose</code> function 
+          to each island container. Before HTMX swaps content, we call this function to cleanup all 
+          reactive runs and their side effects.
+        </p>
+        <pre style="background: var(--color-code-bg); padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>// Global HTMX cleanup handler
+document.body.addEventListener('htmx:beforeCleanup', (event) => {
+  if (event.target._front_dispose) {
+    event.target._front_dispose();
+  }
+});</code></pre>
+      </section>
+
+      <footer class="footer">
+        <p>
+          <a href="./">Back to Examples</a> | 
+          <a href="../KB/">Documentation</a> |
+          <a href="https://github.com/watthem/front-js">GitHub</a>
+        </p>
+        <p class="license">ISC License</p>
+      </footer>
+    </div>
+
+    <!-- HTMX from CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Load uhtml from CDN -->
+    <script type="importmap">
+      {
+        "imports": {
+          "uhtml": "https://esm.sh/uhtml@4.5.11"
+        }
+      }
+    </script>
+
+    <!-- Simulation script (since we can't hit a real backend) -->
+    <script>
+      function simulateHTMXSwap() {
+        const container = document.getElementById('server-container');
+        const indicator = document.getElementById('swap-indicator');
+        
+        indicator.textContent = '⚡ Swapping...';
+        
+        // Fire beforeCleanup event (simulating HTMX behavior)
+        const beforeEvent = new CustomEvent('htmx:beforeCleanup', {
+          detail: { target: container },
+          bubbles: true
+        });
+        beforeEvent.target = container;
+        document.body.dispatchEvent(beforeEvent);
+        
+        // Simulate swap delay
+        setTimeout(() => {
+          // Clear and rebuild islands with new data
+          container.innerHTML = `
+            <div
+              data-island
+              data-component="ServerUptime"
+              data-props='{"name": "web-prod-03", "region": "ap-southeast-1"}'
+            ></div>
+            
+            <div
+              data-island
+              data-component="ServerUptime"
+              data-props='{"name": "db-prod-01", "region": "us-east-1"}'
+            ></div>
+            
+            <div
+              data-island
+              data-component="ServerUptime"
+              data-props='{"name": "cache-prod-01", "region": "eu-west-1"}'
+            ></div>
+          `;
+          
+          // Re-hydrate new islands
+          if (window.front && window.front.hydrate) {
+            window.front.hydrate();
+          }
+          
+          indicator.textContent = '✅ Swapped!';
+          setTimeout(() => { indicator.textContent = ''; }, 2000);
+        }, 500);
+      }
+    </script>
+
+    <!-- Load front.js and components -->
+    <script type="module">
+      import { register, hydrate } from '../front.esm.js';
+      import { NavBar } from '../components/NavBar.js';
+      
+      // Register NavBar component
+      register('NavBar', NavBar);
+      
+      // Import HTMX integration component
+      const module = await import('./htmx-integration.js');
+      register('ServerUptime', module.ServerUptime);
+      
+      // Expose for simulation script
+      window.front = { hydrate };
+      
+      // Hydrate initial islands
+      hydrate();
+    </script>
+  </body>
+</html>
