@@ -77,7 +77,7 @@ hydrate();
 ## Why front.js?
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![CI](https://github.com/front-js/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/front-js/front-js/actions/workflows/ci.yml)
+[![CI](https://github.com/watthem/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/watthem/front-js/actions/workflows/ci.yml)
 
 * 🏝 **Islands Architecture:** Hydrate only what needs interaction.
 * 🔒 **Secure by Default:** Data flows via JSON only. No server closures.

@@ -1,68 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>front.js - NavBar Example</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f5f5f5;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+      }
 
-        .content {
-            padding: 6rem 2rem 2rem;
-            /* Top padding for fixed navbar */
-            max-width: 800px;
-            margin: 0 auto;
-        }
+      .content {
+        padding: 6rem 2rem 2rem;
+        /* Top padding for fixed navbar */
+        max-width: 800px;
+        margin: 0 auto;
+      }
 
-        h1 {
-            margin-top: 0;
-        }
+      h1 {
+        margin-top: 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- NavBar Island -->
-    <div data-island data-component="NavBar" data-props='{
+    <div
+      data-island
+      data-component="NavBar"
+      data-props='{
       "links": [
         {"label": "Home", "url": "/"},
         {"label": "Examples", "url": "/examples/index.html"},
         {"label": "Docs", "url": "/KB/"},
-        {"label": "GitHub", "url": "https://github.com/front-js/front-js"}
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
       ]
-    }'></div>
+    }'
+    ></div>
 
     <div class="content">
-        <h1>NavBar Example</h1>
-        <p>This is a responsive navigation bar component built with front.js.</p>
-        <p>Resize the window to see the mobile menu toggle.</p>
+      <h1>NavBar Example</h1>
+      <p>This is a responsive navigation bar component built with front.js.</p>
+      <p>Resize the window to see the mobile menu toggle.</p>
 
-        <h2>How it works</h2>
-        <p>The state <code>isOpen</code> tracks whether the mobile menu is visible.</p>
-        <pre><code>const isOpen = val(false);</code></pre>
+      <h2>How it works</h2>
+      <p>The state <code>isOpen</code> tracks whether the mobile menu is visible.</p>
+      <pre><code>const isOpen = val(false);</code></pre>
     </div>
 
     <script type="importmap">
-  {
-    "imports": {
-      "uhtml": "https://esm.sh/uhtml@4.5.11"
-    }
-  }
-  </script>
+      {
+        "imports": {
+          "uhtml": "https://esm.sh/uhtml@4.5.11"
+        }
+      }
+    </script>
 
     <script type="module">
-        import { register, hydrate } from '../front.esm.js';
-        import { NavBar } from '../components/NavBar.js';
+      import { register, hydrate } from '../front.esm.js';
+      import { NavBar } from '../components/NavBar.js';
 
-        register('NavBar', NavBar);
-        hydrate();
+      register('NavBar', NavBar);
+      hydrate();
     </script>
-</body>
-
+  </body>
 </html>
