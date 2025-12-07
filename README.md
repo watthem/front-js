@@ -1,39 +1,29 @@
 # front.js
 
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![CI](https://github.com/front-js/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/front-js/front-js/actions/workflows/ci.yml)
-
 **The secure-by-default, islands-first micro-framework.**
 
-`front.js` is a tiny (<5KB) glue layer that connects server-rendered HTML to client-side interactivity. It enforces the "Islands Architecture" to prevent data leakage and XSS vulnerabilities common in modern Server Component frameworks.
-
-## Features
-
-* 🏝 **Islands Architecture:** Hydrate only what needs interaction.
-* 🔒 **Secure by Default:** Data flows via JSON only. No server closures.
-* ⚡ **Tiny Runtime:** No build step required. Uses native ESM.
-* 🛡 **Sanitized Rendering:** Powered by `uhtml` to prevent XSS.
-* 🎯 **Fine-Grained Reactivity:** Value-based state management (val/run/calc) with automatic dependency tracking.
-
-## Installation
-
-### From Source (Zero Build)
-
-Since `front.js` is designed to be zero-build, you can use it directly via ESM import:
-
-```javascript
-import { html, val, register, hydrate } from './path/to/front.esm.js';
-```
-
-### Via NPM
+## Install
 
 ```bash
 npm install front-js
 ```
 
-## Quick Start
+Or use directly via CDN:
 
-### 1. The Server (HTML)
+```html
+<script type="importmap">
+{
+  "imports": {
+    "front-js": "https://esm.sh/front-js@0.0.1",
+    "uhtml": "https://esm.sh/uhtml@4.5.11"
+  }
+}
+</script>
+```
+
+## Hello World
+
+**1. HTML** - Mark interactive areas with `data-island`:
 
 Output your HTML with `data-island`, `data-component`, and `data-props`.
 
@@ -63,9 +53,7 @@ Output your HTML with `data-island`, `data-component`, and `data-props`.
 </html>
 ```
 
-### 2. The Client (JavaScript)
-
-Register your component and hydrate.
+**2. JavaScript** - Register your component and hydrate:
 
 ```javascript       
 import { html, val, register, hydrate } from './src/index.js';
@@ -85,6 +73,19 @@ function Counter(props) {
 register('Counter', Counter);
 hydrate();
 ```
+
+## Why front.js?
+
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![CI](https://github.com/front-js/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/front-js/front-js/actions/workflows/ci.yml)
+
+* 🏝 **Islands Architecture:** Hydrate only what needs interaction.
+* 🔒 **Secure by Default:** Data flows via JSON only. No server closures.
+* ⚡ **Tiny Runtime:** <5KB gzipped. No build step required.
+* 🛡 **Sanitized Rendering:** Powered by `uhtml` to prevent XSS.
+* 🎯 **Fine-Grained Reactivity:** Value-based state management (val/run/calc) with automatic dependency tracking.
+
+> **Note:** Built in response to recent security concerns with React Server Components ([context](https://overreacted.io/a-chain-reaction/)).
 
 ## Core Concepts
 
