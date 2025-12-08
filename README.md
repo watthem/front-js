@@ -1,11 +1,11 @@
-# front.js
+# frontjs
 
 **The secure-by-default, islands-first micro-framework.**
 
-[![NPM Version](https://img.shields.io/npm/v/@watthem/front-js.svg)](https://www.npmjs.com/package/@watthem/front-js)
+[![NPM Version](https://img.shields.io/npm/v/@frontjs/core.svg)](https://www.npmjs.com/package/@frontjs/core)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![CI](https://github.com/watthem/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/watthem/front-js/actions/workflows/ci.yml)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@watthem/front-js)](https://bundlephobia.com/package/@watthem/front-js)
+[![CI](https://github.com/frontjs/core/actions/workflows/ci.yml/badge.svg)](https://github.com/frontjs/core/actions/workflows/ci.yml)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@frontjs/core)](https://bundlephobia.com/package/@frontjs/core)
 
 **🌐 [Website](https://frontjs.dev)** | **📚 [Documentation](https://frontjs.dev/KB/)** | **💻 [Examples](https://frontjs.dev/examples/)**
 
@@ -28,10 +28,20 @@
 - [Contributing](#contributing)
 - [License](#license)
 
+## Monorepo Structure
+
+This repository is organized as a monorepo containing:
+- **[@frontjs/core](./packages/core/)** - The runtime (<5KB) with Islands Architecture hydration
+- **[@frontjs/actions](./packages/actions/)** - Type-safe command/RPC layer with Standard Schema validation
+
 ## Install
 
 ```bash
-npm install front-js
+# Install the core runtime
+npm install @frontjs/core uhtml
+
+# Optional: Install actions for type-safe server communication
+npm install @frontjs/actions
 ```
 
 Or use directly via CDN:
