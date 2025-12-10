@@ -1,54 +1,44 @@
 import { html } from 'uhtml';
 import { val, run, register, hydrate } from './front.esm.js';
 
-// Document configuration
-const DOCS = {
-  // Getting Started
-  'when-to-use': {
-    title: 'When to Use',
-    file: 'reference/when-to-use.md'
+// Document configuration organized by category
+const DOCS_CATEGORIES = [
+  {
+    label: 'Getting Started',
+    items: [
+      { id: 'when-to-use', title: 'When to Use', file: 'reference/when-to-use.md' },
+      { id: 'faq', title: 'FAQ', file: 'FAQ.md' }
+    ]
   },
-  'faq': {
-    title: 'FAQ',
-    file: 'FAQ.md'
+  {
+    label: 'Guides',
+    items: [
+      { id: 'security', title: 'Security Model', file: 'guides/security.md' },
+      { id: 'integrations', title: 'Integrations', file: 'guides/integrations.md' },
+      { id: 'template-tags', title: 'Template Tags vs Strings', file: 'guides/template-tags-vs-strings.md' }
+    ]
   },
-  
-  // Guides
-  'security': {
-    title: 'Security',
-    file: 'guides/security.md'
+  {
+    label: 'API Reference',
+    items: [
+      { id: 'api-core', title: 'Core API', file: 'api/core/index.md' },
+      { id: 'api-actions', title: 'Actions API', file: 'api/actions/index.md' }
+    ]
   },
-  'integrations': {
-    title: 'Integrations',
-    file: 'guides/integrations.md'
-  },
-  'template-tags': {
-    title: 'Template Tags',
-    file: 'guides/template-tags-vs-strings.md'
-  },
-  
-  // API Reference
-  'api-core': {
-    title: 'API: Core',
-    file: 'api/core/index.md'
-  },
-  'api-actions': {
-    title: 'API: Actions',
-    file: 'api/actions/index.md'
-  },
-  
-  // Reference
-  'limitations': {
-    title: 'Limitations',
-    file: 'reference/limitations.md'
-  },
-  
-  // Legacy
-  'manifesto': {
-    title: 'Manifesto',
-    file: 'content/MANIFESTO.md'
+  {
+    label: 'Reference',
+    items: [
+      { id: 'limitations', title: 'Limitations', file: 'reference/limitations.md' },
+      { id: 'manifesto', title: 'Manifesto', file: 'content/MANIFESTO.md' }
+    ]
   }
-};
+];
+
+// Flatten for lookup
+const DOCS = DOCS_CATEGORIES.flatMap(cat => cat.items).reduce((acc, item) => {
+  acc[item.id] = item;
+  return acc;
+}, {});
 
 /**
  * MarkdownViewer Component
@@ -58,7 +48,6 @@ function MarkdownViewer(props) {
   const content = val('');
   const loading = val(true);
   const error = val(null);
-  // Get initial hash, default to when-to-use
   const initialHash = typeof window !== 'undefined' 
     ? (window.location.hash.slice(1) || 'when-to-use')
     : 'when-to-use';
@@ -68,17 +57,16 @@ function MarkdownViewer(props) {
   const loadMarkdown = async (docId) => {
     const doc = DOCS[docId];
     if (!doc) {
-      const errorMsg = `Document "${docId}" not found. Available documents: ${Object.keys(DOCS).join(', ')}`;
+      const errorMsg = `Document "${docId}" not found`;
       error(errorMsg);
       loading(false);
       console.error('[MarkdownViewer]', errorMsg);
       return;
     }
 
-    // Set loading state first to hide old content immediately
     loading(true);
     error(null);
-    content(''); // Clear previous content
+    content('');
 
     try {
       const response = await fetch(doc.file);
@@ -91,26 +79,22 @@ function MarkdownViewer(props) {
         throw new Error(`File "${doc.file}" is empty`);
       }
       
-      // Use marked library (loaded from CDN) to parse markdown
       if (typeof marked !== 'undefined' && marked.parse) {
         const html = marked.parse(text);
         content(html);
       } else {
-        // Fallback: render as plain text if marked isn't loaded
-        // Escape HTML for safety
         const escaped = text
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;');
         content(`<pre>${escaped}</pre>`);
-        console.warn('[MarkdownViewer] marked library not loaded, rendering as plain text');
+        console.warn('[MarkdownViewer] marked library not loaded');
       }
       loading(false);
     } catch (err) {
-      const errorMsg = err.message || 'Unknown error occurred';
-      error(errorMsg);
+      error(err.message || 'Unknown error');
       loading(false);
-      console.error('[MarkdownViewer] Failed to load markdown:', err);
+      console.error('[MarkdownViewer]', err);
     }
   };
 
@@ -122,8 +106,7 @@ function MarkdownViewer(props) {
     }
   });
 
-  // Listen for hash changes and update docId
-  // Hash-based routing: when URL hash changes (e.g., #manifesto), load that document
+  // Listen for hash changes
   run(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1) || 'when-to-use';
@@ -132,37 +115,29 @@ function MarkdownViewer(props) {
       }
     };
 
-    // Initial sync with current hash
     handleHashChange();
 
-    // Set default hash if none exists (only once, to avoid race conditions)
     if (!window.location.hash) {
       window.location.hash = 'when-to-use';
-      // hashchange event will fire automatically, no need to call handleHashChange again
     }
 
-    // Listen for hash changes (browser fires this when URL hash changes)
     window.addEventListener('hashchange', handleHashChange);
     
-    // Cleanup
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   });
 
-  // Intercept clicks on internal links
+  // Intercept internal markdown links
   const handleLinkClick = (e) => {
-    // Find closest anchor tag
     const link = e.target.closest('a');
     if (!link) return;
     
     const href = link.getAttribute('href');
     if (!href) return;
     
-    // Check if it's an internal markdown link (e.g., ./LIMITATIONS.md)
     if (href.endsWith('.md') && (href.startsWith('./') || !href.includes('://'))) {
       e.preventDefault();
-      // Map filename to doc ID
       const filename = href.split('/').pop();
       const docEntry = Object.entries(DOCS).find(([_, doc]) => doc.file === filename);
       
@@ -177,22 +152,13 @@ function MarkdownViewer(props) {
       ${loading() ? html`
         <div class="loading" role="status" aria-live="polite">
           <div class="loading-spinner"></div>
-          <p>Loading content...</p>
+          <p>Loading...</p>
         </div>
       ` : ''}
       ${error() ? html`
         <div class="error" role="alert">
-          <strong>Error loading content:</strong>
+          <strong>Error:</strong>
           <p>${error()}</p>
-          <details>
-            <summary>Troubleshooting</summary>
-            <ul>
-              <li>Make sure you're serving this from a web server (not file://)</li>
-              <li>Try: <code>npx serve KB</code> from the project root</li>
-              <li>Or use the back.js server: <code>node back-js/index.js</code></li>
-              <li>Check the browser console for more details</li>
-            </ul>
-          </details>
         </div>
       ` : ''}
       ${!loading() && !error() && content() ? html`
@@ -203,17 +169,10 @@ function MarkdownViewer(props) {
 }
 
 /**
- * Navigation Component
- * Tab-based navigation between documents
- * 
- * Uses hash-based routing (no router needed):
- * - Clicking a button sets window.location.hash (e.g., #explainer, #manifesto)
- * - Browser fires 'hashchange' event automatically
- * - This component listens to hashchange and updates active button styling
- * - MarkdownViewer also listens to hashchange and loads the appropriate content
+ * Sidebar Component
+ * Hierarchical navigation with categories
  */
-function Navigation(props) {
-  // Get initial hash, default to when-to-use
+function Sidebar(props) {
   const initialHash = typeof window !== 'undefined'
     ? (window.location.hash.slice(1) || 'when-to-use')
     : 'when-to-use';
@@ -228,68 +187,60 @@ function Navigation(props) {
       }
     };
 
-    // Initial hash sync
     handleHashChange();
-
-    // Listen for hash changes (browser fires this when URL hash changes)
     window.addEventListener('hashchange', handleHashChange);
     
-    // Cleanup
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   });
 
-  // Click handler: sets URL hash, which triggers hashchange event
-  const handleNavClick = (docId) => {
+  const handleNavClick = (e, docId) => {
+    e.preventDefault();
     window.location.hash = docId;
   };
 
   return () => html`
-    <nav class="navigation">
-      ${Object.entries(DOCS).map(([id, doc]) => html`
-        <button
-          class=${`nav-button ${activeDoc() === id ? 'active' : ''}`}
-          onclick=${() => handleNavClick(id)}
-        >
-          ${doc.title}
-        </button>
-      `)}
-    </nav>
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        ${DOCS_CATEGORIES.map(category => html`
+          <div class="sidebar-section">
+            <h3 class="sidebar-category">${category.label}</h3>
+            <ul class="sidebar-links">
+              ${category.items.map(item => html`
+                <li>
+                  <a
+                    href=${`#${item.id}`}
+                    class=${activeDoc() === item.id ? 'active' : ''}
+                    onclick=${(e) => handleNavClick(e, item.id)}
+                  >
+                    ${item.title}
+                  </a>
+                </li>
+              `)}
+            </ul>
+          </div>
+        `)}
+      </div>
+    </aside>
   `;
 }
 
 // Register components
-register('Navigation', Navigation);
+register('Sidebar', Sidebar);
 register('MarkdownViewer', MarkdownViewer);
 
-// Hydrate on load - wait for DOM and marked library
+// Hydrate on load
 function init() {
   try {
     hydrate();
     console.log('[front.js] Hydration complete');
   } catch (err) {
     console.error('[front.js] Hydration failed:', err);
-    const main = document.querySelector('.main');
-    if (main) {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error';
-      errorDiv.setAttribute('role', 'alert');
-      errorDiv.innerHTML = `
-        <strong>Error: Failed to initialize front.js</strong>
-        <p>${err.message || 'Unknown error'}</p>
-        <details>
-          <summary>Error details</summary>
-          <pre>${err.stack || err.toString()}</pre>
-        </details>
-        <p><small>Check the browser console for more details.</small></p>
-      `;
-      main.appendChild(errorDiv);
-    }
   }
 }
 
-// Wait for both DOM and marked library to be ready
+// Wait for marked library
 function waitForMarked(callback, maxAttempts = 50) {
   if (typeof marked !== 'undefined' && marked.parse) {
     callback();
@@ -297,7 +248,7 @@ function waitForMarked(callback, maxAttempts = 50) {
   }
   
   if (maxAttempts <= 0) {
-    console.warn('[front.js] marked library not loaded after timeout, proceeding anyway');
+    console.warn('[front.js] marked library timeout');
     callback();
     return;
   }
@@ -310,6 +261,5 @@ if (document.readyState === 'loading') {
     waitForMarked(init);
   });
 } else {
-  // DOM already loaded
   waitForMarked(init);
 }
