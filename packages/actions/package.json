@@ -1,6 +1,6 @@
 {
   "name": "@frontjs/actions",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Type-safe command/RPC layer with Standard Schema validation for frontjs",
   "type": "module",
   "main": "./src/index.js",

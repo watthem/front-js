@@ -25,7 +25,17 @@ const DOCS_CATEGORIES = [
     label: 'API Reference',
     items: [
       { id: 'api-core', title: 'Core API', file: 'api/core/index.md' },
-      { id: 'api-actions', title: 'Actions API', file: 'api/actions/index.md' }
+      { id: 'api-core-val', title: '  • val()', file: 'api/core/val.md' },
+      { id: 'api-core-run', title: '  • run()', file: 'api/core/run.md' },
+      { id: 'api-core-calc', title: '  • calc()', file: 'api/core/calc.md' },
+      { id: 'api-core-html', title: '  • html()', file: 'api/core/html.md' },
+      { id: 'api-core-render', title: '  • render()', file: 'api/core/render.md' },
+      { id: 'api-core-register', title: '  • register()', file: 'api/core/register.md' },
+      { id: 'api-core-hydrate', title: '  • hydrate()', file: 'api/core/hydrate.md' },
+      { id: 'api-core-define-component', title: '  • defineComponent()', file: 'api/core/defineComponent.md' },
+      { id: 'api-actions', title: 'Actions API', file: 'api/actions/index.md' },
+      { id: 'api-actions-client', title: '  • createClient()', file: 'api/actions/createClient.md' },
+      { id: 'api-actions-router', title: '  • createRouter()', file: 'api/actions/createRouter.md' }
     ]
   },
   {
