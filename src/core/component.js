@@ -15,12 +15,12 @@ import { run } from './reactivity.js';
  */
 export function defineComponent(renderFn, container) {
   if (typeof renderFn !== 'function') {
-    console.error('[front.js] defineComponent() requires a render function.');
+    console.error('[frontjs] defineComponent() requires a render function.');
     return;
   }
 
   if (!container || !(container instanceof HTMLElement)) {
-    console.error('[front.js] defineComponent() requires a valid DOM element container.');
+    console.error('[frontjs] defineComponent() requires a valid DOM element container.');
     return;
   }
 
@@ -30,9 +30,9 @@ export function defineComponent(renderFn, container) {
       const template = renderFn();
       render(container, template);
     } catch (error) {
-      console.error('[front.js] Error rendering component:', error, container);
+      console.error('[frontjs] Error rendering component:', error, container);
       // Render error fallback to prevent blank UI
-      container.textContent = '[front.js] Rendering error occurred.';
+      container.textContent = '[frontjs] Rendering error occurred.';
     }
   });
 

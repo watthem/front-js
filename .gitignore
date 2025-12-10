@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 dist/
+types/
 *.map
 
 # Test coverage
@@ -54,3 +55,4 @@ pnpm-lock.yaml
 yarn.lock
 
 .agents/
+notes/

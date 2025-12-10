@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Key Commands
 
 ### Development
+
 ```bash
 npm install              # Install dependencies
 npm test                 # Run all tests with Vitest
@@ -20,10 +21,35 @@ npm run lint             # Lint code with ESLint
 ```
 
 ### Running Examples
+
 ```bash
 npx serve .
 # Navigate to http://localhost:3000/examples/index.html
 ```
+
+### Website Build Scripts (Optional)
+
+The framework itself has **zero build step**, but the website uses optional build scripts for progressive enhancement:
+
+```bash
+npm run navbar:generate  # Generate server-rendered navbar HTML
+npm run navbar:validate  # Validate navbar islands match config
+npm run docs:api         # Generate API documentation from JSDoc
+```
+
+**NavBar Generation**: Keeps server-rendered HTML in sync with props across all pages.
+
+- **Config**: `website/navbar-config.json` defines links for each page
+- **How it works**: Reads `NavBar.server.js` renderer → generates HTML → updates HTML files in-place
+- **Philosophy**: Generated HTML is committed to git (site works without building)
+- **When to use**: After editing navbar links or adding new pages with navbar
+
+To update navbar links:
+1. Edit `website/navbar-config.json`
+2. Run `npm run navbar:generate`
+3. Commit the updated HTML files
+
+**Why this works**: The framework ships as ES modules (no build). The website build is OPTIONAL and only for SEO/performance optimization (pre-rendering). This follows the same pattern as `generate-initial-doc.js` for docs.
 
 ## Architecture Overview
 
@@ -69,11 +95,13 @@ src/
 ### Hydration System (src/core/client.js)
 
 **Component Registration**:
+
 ```javascript
-register(name, componentFn)  // name must match /^[a-zA-Z0-9_-]+$/
+register(name, componentFn); // name must match /^[a-zA-Z0-9_-]+$/
 ```
 
 **Hydration Algorithm**:
+
 1. Query all `[data-island]` elements
 2. For each island:
    - Extract `data-component` name and validate (alphanumeric only)
@@ -88,6 +116,7 @@ register(name, componentFn)  // name must match /^[a-zA-Z0-9_-]+$/
 ### Component Model (src/core/component.js)
 
 Components are higher-order functions:
+
 ```javascript
 function MyComponent(props) {
   // Setup phase: create values, calculated values
@@ -101,6 +130,7 @@ function MyComponent(props) {
 `defineComponent(renderFn, container)` wraps the render function in a run that auto-reruns on value changes, passing the template to uhtml's render function for efficient DOM diffing.
 
 **Lifecycle Cleanup**: Components can use runs with cleanup functions for side effects:
+
 ```javascript
 function MyComponent(props) {
   const tick = val(0);
@@ -120,6 +150,7 @@ function MyComponent(props) {
 ## Critical Constraints
 
 ### Size Budget
+
 - **Hard limit**: <5KB minified + gzipped (excluding uhtml peer dependency)
 - Enforced via `npm run size-check` which fails CI if exceeded
 - Build config: `build.config.js` uses esbuild with target es2020
@@ -163,22 +194,20 @@ hydrate();
 ### Server-Rendered HTML
 
 ```html
-<div
-  data-island
-  data-component="Counter"
-  data-props='{"start": 10}'
-></div>
+<div data-island data-component="Counter" data-props='{"start": 10}'></div>
 ```
 
 ### Testing
 
 Tests use Vitest with jsdom environment. Key test files:
+
 - `tests/reactivity.test.js` - val/run/calc behavior
 - `tests/component.test.js` - Component lifecycle
 - `tests/client.test.js` - Hydration algorithm
 - `tests/security.test.js` - XSS protection, injection attacks
 
 Run single test file:
+
 ```bash
 npm test -- tests/reactivity.test.js
 ```
@@ -186,11 +215,13 @@ npm test -- tests/reactivity.test.js
 ## Alignment with Standards
 
 When making changes, verify against:
+
 1. **docs/BLUEPRINT.md** - Detailed architecture and implementation specs
 2. **wiki/STANDARDS.md** - "North Star" principles (Headless Reactivity, Standard Schema alignment, Platform First)
 3. **wiki/PRD.md** - Original product requirements
 
 Major architectural changes require:
+
 1. Discussion in GitHub issue first
 2. Update to docs/BLUEPRINT.md
 3. Alignment with wiki/STANDARDS.md

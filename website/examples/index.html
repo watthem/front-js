@@ -38,18 +38,53 @@
   <!-- Plausible Analytics -->
   <script defer data-domain="frontjs.dev" src="https://plausible.io/js/script.js"></script>
 
+  <!-- Preload critical scripts to speed hydration -->
+  <link rel="modulepreload" href="../front.esm.js" />
+  <link rel="modulepreload" href="../app.js" />
+
   <link rel="stylesheet" href="../styles.css" />
 </head>
 
 <body>
-  <div data-island data-component="NavBar" data-props='{
-      "links": [
-        {"label": "Home", "url": "../"},
-        {"label": "Examples", "url": "./"},
-        {"label": "Docs", "url": "../KB/"},
-        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
-      ]
-    }'></div>
+  <div
+      data-island
+      data-component="NavBar"
+      data-props='{"links":[{"label":"Home","url":"../"},{"label":"Examples","url":"./"},{"label":"Docs","url":"../KB/"},{"label":"GitHub","url":"https://github.com/watthem/front-js"}]}'
+    >
+      <nav class="navbar">
+        <div class="navbar-container">
+          <a href="/" class="navbar-brand">front.js</a>
+
+          <button class="navbar-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="hamburger"></span>
+          </button>
+
+          <div class="navbar-menu desktop">
+            <a href="../" class="navbar-link">Home</a>
+            <a href="./" class="navbar-link">Examples</a>
+            <a href="../KB/" class="navbar-link">Docs</a>
+            <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+          </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="../" class="navbar-link">Home</a>
+          <a href="./" class="navbar-link">Examples</a>
+          <a href="../KB/" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="../" class="navbar-link">Home</a>
+          <a href="./" class="navbar-link">Examples</a>
+          <a href="../docs/" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
   <div class="container" style="padding-top: 60px">
     <header class="hero">
       <h1>Examples</h1>
@@ -57,6 +92,11 @@
       <p class="description">
         A collection of interactive examples demonstrating the power of <strong>val</strong>,
         <strong>run</strong>, and <strong>calc</strong>.
+      </p>
+      <p class="description" style="text-align: center; margin-top: -1rem;">
+        Navbar is server-rendered with CSS extracted to <code>styles.css</code> so it paints immediately.
+        See the <a href="../docs/guides/troubleshooting" class="navbar-link" style="padding: 0;">Troubleshooting guide</a>
+        for the pattern applied across the site.
       </p>
       <div class="cta">
         <a href="../" class="button secondary">Back to Home</a>

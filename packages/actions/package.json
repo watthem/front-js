@@ -1,0 +1,47 @@
+{
+  "name": "@frontjs/actions",
+  "version": "0.0.2",
+  "description": "Type-safe command/RPC layer with Standard Schema validation for frontjs",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./client": {
+      "import": "./src/client.js",
+      "types": "./types/client.d.ts"
+    },
+    "./server": {
+      "import": "./src/server.js",
+      "types": "./types/server.d.ts"
+    }
+  },
+  "files": [
+    "src",
+    "types",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "prepublishOnly": "cd ../.. && npm run types:actions && npm run docs:api"
+  },
+  "keywords": [
+    "rpc",
+    "actions",
+    "validation",
+    "standard-schema",
+    "type-safe"
+  ],
+  "author": "Matthew Hendricks <matthew.scott.hendricks@gmail.com>",
+  "homepage": "https://frontjs.dev",
+  "license": "ISC",
+  "peerDependencies": {
+    "valibot": "^0.30.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

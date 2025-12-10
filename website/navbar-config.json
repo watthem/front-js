@@ -1,0 +1,44 @@
+{
+  "pages": [
+    {
+      "path": "website/index.html",
+      "links": [
+        {"label": "Home", "url": "./"},
+        {"label": "Examples", "url": "./examples/"},
+        {"label": "Docs", "url": "./KB/"},
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
+      ],
+      "activePath": "/"
+    },
+    {
+      "path": "website/examples/index.html",
+      "links": [
+        {"label": "Home", "url": "../"},
+        {"label": "Examples", "url": "./"},
+        {"label": "Docs", "url": "../KB/"},
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
+      ],
+      "activePath": "/examples/"
+    },
+    {
+      "path": "website/docs/index.html",
+      "links": [
+        {"label": "Home", "url": "../"},
+        {"label": "Examples", "url": "../examples/"},
+        {"label": "Docs", "url": "../KB/"},
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
+      ],
+      "activePath": "/docs/"
+    },
+    {
+      "path": "website/KB/index.html",
+      "links": [
+        {"label": "Home", "url": "../"},
+        {"label": "Examples", "url": "../examples/"},
+        {"label": "Docs", "url": "./"},
+        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
+      ],
+      "activePath": "/KB/"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "name": "@frontjs/core",
+  "version": "0.0.2",
+  "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontjs/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frontjs/core/issues"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./types/index.d.ts"
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "types",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.config.js",
+    "build:check": "node build.config.js --check-size",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "size-check": "npm run build:check",
+    "prepublishOnly": "npm run build && cd ../.. && npm run types:core && npm run docs:api"
+  },
+  "keywords": [
+    "framework",
+    "islands-architecture",
+    "micro-framework",
+    "reactivity",
+    "signals",
+    "hydration",
+    "esm"
+  ],
+  "author": "Matthew Hendricks <matthew.scott.hendricks@gmail.com>",
+  "homepage": "https://frontjs.dev",
+  "license": "ISC",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "uhtml": "^4.5.11"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^9.1.3"
+  }
+}
