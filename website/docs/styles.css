@@ -43,6 +43,7 @@ body {
   background: var(--color-bg-light);
   color: var(--color-text);
   padding: 2rem;
+  padding-top: calc(60px + 2rem); /* Account for fixed navbar */
   text-align: center;
   border-bottom: 1px solid var(--color-border);
 }
