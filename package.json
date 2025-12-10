@@ -21,6 +21,9 @@
     "docs:core": "jsdoc2md packages/core/src/**/*.js --files --heading-depth 2 --output website/docs/api/core.md",
     "docs:actions": "jsdoc2md packages/actions/src/**/*.js --files --heading-depth 2 --output website/docs/api/actions.md",
     "docs:serve": "npx serve website/docs",
+    "types:generate": "npm run types:core && npm run types:actions",
+    "types:core": "tsc --skipLibCheck --declaration --emitDeclarationOnly --allowJs --outDir packages/core/types packages/core/src/index.js",
+    "types:actions": "tsc --skipLibCheck --declaration --emitDeclarationOnly --allowJs --outDir packages/actions/types packages/actions/src/index.js",
     "repomix": "npx repomix",
     "repomix:dev": "npx repomix --config .repomix/developer.config.json",
     "repomix:pm": "npx repomix --config .repomix/pm.config.json",
@@ -34,6 +37,7 @@
     "jsdoc-to-markdown": "^9.1.3",
     "jsdom": "^23.0.0",
     "prettier": "^3.0.0",
+    "typescript": "^5.9.3",
     "uhtml": "^4.5.11",
     "vitest": "^1.0.0"
   },

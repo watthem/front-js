@@ -4,6 +4,7 @@
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",
   "main": "./src/index.js",
+  "types": "./types/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/frontjs/core.git"
@@ -13,12 +14,14 @@
   },
   "exports": {
     ".": {
-      "import": "./src/index.js"
+      "import": "./src/index.js",
+      "types": "./types/index.d.ts"
     }
   },
   "files": [
     "src",
     "dist",
+    "types",
     "README.md"
   ],
   "scripts": {

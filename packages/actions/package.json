@@ -4,13 +4,24 @@
   "description": "Type-safe command/RPC layer with Standard Schema validation for frontjs",
   "type": "module",
   "main": "./src/index.js",
+  "types": "./types/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
-    "./client": "./src/client.js",
-    "./server": "./src/server.js"
+    ".": {
+      "import": "./src/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./client": {
+      "import": "./src/client.js",
+      "types": "./types/client.d.ts"
+    },
+    "./server": {
+      "import": "./src/server.js",
+      "types": "./types/server.d.ts"
+    }
   },
   "files": [
     "src",
+    "types",
     "README.md"
   ],
   "scripts": {
