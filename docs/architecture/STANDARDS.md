@@ -44,7 +44,7 @@ const propsSchema = object({
 
 // Register component with optional schema validation
 register('Counter', CounterComponent, {
-  schema: propsSchema
+  schema: propsSchema,
 });
 
 // Hydrate validates props before passing to component
@@ -52,6 +52,7 @@ await hydrate();
 ```
 
 **Status:** ✅ Implemented in v0.0.1
+
 - `register()` accepts optional `schema` in options parameter
 - `hydrate()` validates props using `schema['~standard'].validate()`
 - Supports both sync and async validation
@@ -107,6 +108,7 @@ front.js embraces constraints to maintain focus, security, and simplicity:
 - **No routing** - Server handles routing; client handles interactivity
 
 **Standard:** Before adding a feature, ask:
+
 1. Does this violate a core constraint?
 2. Can users solve this with composition instead?
 3. Does this bloat the bundle size?
