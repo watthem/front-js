@@ -25,7 +25,8 @@
     "README.md"
   ],
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "prepublishOnly": "cd ../.. && npm run types:actions && npm run docs:api"
   },
   "keywords": [
     "rpc",

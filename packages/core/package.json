@@ -29,7 +29,8 @@
     "build:check": "node build.config.js --check-size",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "size-check": "npm run build:check"
+    "size-check": "npm run build:check",
+    "prepublishOnly": "npm run build && cd ../.. && npm run types:core && npm run docs:api"
   },
   "keywords": [
     "framework",
