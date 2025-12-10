@@ -3,20 +3,50 @@ import { val, run, register, hydrate } from './front.esm.js';
 
 // Document configuration
 const DOCS = {
-  explainer: {
-    title: 'When to Use front.js',
-    file: 'WHEN-TO-USE-FRONT.md',
-    id: 'explainer'
+  // Getting Started
+  'when-to-use': {
+    title: 'When to Use',
+    file: 'reference/when-to-use.md'
   },
-  manifesto: {
-    title: 'Manifesto',
-    file: 'MANIFESTO.md',
-    id: 'manifesto'
+  'faq': {
+    title: 'FAQ',
+    file: 'FAQ.md'
   },
-  limitations: {
+  
+  // Guides
+  'security': {
+    title: 'Security',
+    file: 'guides/security.md'
+  },
+  'integrations': {
+    title: 'Integrations',
+    file: 'guides/integrations.md'
+  },
+  'template-tags': {
+    title: 'Template Tags',
+    file: 'guides/template-tags-vs-strings.md'
+  },
+  
+  // API Reference
+  'api-core': {
+    title: 'API: Core',
+    file: 'api/core/index.md'
+  },
+  'api-actions': {
+    title: 'API: Actions',
+    file: 'api/actions/index.md'
+  },
+  
+  // Reference
+  'limitations': {
     title: 'Limitations',
-    file: 'LIMITATIONS.md',
-    id: 'limitations'
+    file: 'reference/limitations.md'
+  },
+  
+  // Legacy
+  'manifesto': {
+    title: 'Manifesto',
+    file: 'content/MANIFESTO.md'
   }
 };
 
@@ -28,10 +58,10 @@ function MarkdownViewer(props) {
   const content = val('');
   const loading = val(true);
   const error = val(null);
-  // Get initial hash, default to explainer
+  // Get initial hash, default to when-to-use
   const initialHash = typeof window !== 'undefined' 
-    ? (window.location.hash.slice(1) || 'explainer')
-    : 'explainer';
+    ? (window.location.hash.slice(1) || 'when-to-use')
+    : 'when-to-use';
   const docId = val(initialHash);
 
   // Fetch markdown content
@@ -51,7 +81,7 @@ function MarkdownViewer(props) {
     content(''); // Clear previous content
 
     try {
-      const response = await fetch(`content/${doc.file}`);
+      const response = await fetch(doc.file);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -96,7 +126,7 @@ function MarkdownViewer(props) {
   // Hash-based routing: when URL hash changes (e.g., #manifesto), load that document
   run(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1) || 'explainer';
+      const hash = window.location.hash.slice(1) || 'when-to-use';
       if (DOCS[hash]) {
         docId(hash);
       }
@@ -107,7 +137,7 @@ function MarkdownViewer(props) {
 
     // Set default hash if none exists (only once, to avoid race conditions)
     if (!window.location.hash) {
-      window.location.hash = 'explainer';
+      window.location.hash = 'when-to-use';
       // hashchange event will fire automatically, no need to call handleHashChange again
     }
 
@@ -183,16 +213,16 @@ function MarkdownViewer(props) {
  * - MarkdownViewer also listens to hashchange and loads the appropriate content
  */
 function Navigation(props) {
-  // Get initial hash, default to explainer
+  // Get initial hash, default to when-to-use
   const initialHash = typeof window !== 'undefined'
-    ? (window.location.hash.slice(1) || 'explainer')
-    : 'explainer';
+    ? (window.location.hash.slice(1) || 'when-to-use')
+    : 'when-to-use';
   const activeDoc = val(initialHash);
 
   // Listen for hash changes
   run(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1) || 'explainer';
+      const hash = window.location.hash.slice(1) || 'when-to-use';
       if (DOCS[hash]) {
         activeDoc(hash);
       }
