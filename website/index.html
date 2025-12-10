@@ -45,14 +45,7 @@
     <div
       data-island
       data-component="NavBar"
-      data-props='{
-        "links": [
-          {"label": "Home", "url": "./"},
-          {"label": "Docs", "url": "./docs/"},
-          {"label": "Examples", "url": "./examples/"},
-          {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
-        ]
-      }'
+      data-props='{"links":[{"label":"Home","url":"./"},{"label":"Examples","url":"./examples/"},{"label":"Docs","url":"./KB/"},{"label":"GitHub","url":"https://github.com/watthem/front-js"}]}'
     >
       <nav class="navbar">
         <div class="navbar-container">
@@ -63,19 +56,27 @@
           </button>
 
           <div class="navbar-menu desktop">
-            <a href="./" class="navbar-link active">Home</a>
+            <a href="./" class="navbar-link">Home</a>
             <a href="./examples/" class="navbar-link">Examples</a>
-            <a href="./docs/" class="navbar-link">Docs</a>
-            <a href="./docs/guides/troubleshooting" class="navbar-link">Troubleshooting</a>
+            <a href="./KB/" class="navbar-link">Docs</a>
             <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
           </div>
         </div>
 
         <div class="navbar-mobile-menu">
-          <a href="./" class="navbar-link active">Home</a>
+          <a href="./" class="navbar-link">Home</a>
+          <a href="./examples/" class="navbar-link">Examples</a>
+          <a href="./KB/" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="./" class="navbar-link">Home</a>
           <a href="./examples/" class="navbar-link">Examples</a>
           <a href="./docs/" class="navbar-link">Docs</a>
-          <a href="./docs/guides/troubleshooting" class="navbar-link">Troubleshooting</a>
           <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
         </div>
       </nav>

@@ -42,14 +42,55 @@
 </head>
 
 <body>
-  <div data-island data-component="NavBar" data-props='{
-      "links": [
-        {"label": "Home", "url": "../"},
-        {"label": "Examples", "url": "../examples/"},
-        {"label": "Docs", "url": "./"},
-        {"label": "GitHub", "url": "https://github.com/watthem/front-js"}
-      ]
-    }'></div>
+  <div
+      data-island
+      data-component="NavBar"
+      data-props='{"links":[{"label":"Home","url":"../"},{"label":"Examples","url":"../examples/"},{"label":"Docs","url":"./"},{"label":"GitHub","url":"https://github.com/watthem/front-js"}]}'
+    >
+      <nav class="navbar">
+        <div class="navbar-container">
+          <a href="/" class="navbar-brand">front.js</a>
+
+          <button class="navbar-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="hamburger"></span>
+          </button>
+
+          <div class="navbar-menu desktop">
+            <a href="../" class="navbar-link">Home</a>
+            <a href="../examples/" class="navbar-link">Examples</a>
+            <a href="./" class="navbar-link">Docs</a>
+            <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+          </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="../" class="navbar-link">Home</a>
+          <a href="../examples/" class="navbar-link">Examples</a>
+          <a href="./" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="../" class="navbar-link">Home</a>
+          <a href="../examples/" class="navbar-link">Examples</a>
+          <a href="./" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
+        </div>
+
+        <div class="navbar-mobile-menu">
+          <a href="../" class="navbar-link">Home</a>
+          <a href="../examples/" class="navbar-link">Examples</a>
+          <a href="./" class="navbar-link">Docs</a>
+          <a href="https://github.com/watthem/front-js" class="navbar-link">GitHub</a>
+        </div>
+      </nav>
+    </div>
   <div class="container" style="padding-top: 60px;">
     <header class="hero">
       <h1>Knowledge Base</h1>

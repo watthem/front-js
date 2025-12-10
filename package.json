@@ -22,6 +22,8 @@
     "docs:actions": "jsdoc2md packages/actions/src/**/*.js --files --heading-depth 2 --output website/docs/api/actions.md",
     "docs:serve": "npx serve website/docs",
     "docs:generate-initial": "node scripts/generate-initial-doc.js",
+    "navbar:generate": "node scripts/generate-navbar.js",
+    "navbar:validate": "node scripts/validate-navbar.js",
     "types:generate": "npm run types:core && npm run types:actions",
     "types:core": "tsc --skipLibCheck --declaration --emitDeclarationOnly --allowJs --outDir packages/core/types packages/core/src/index.js",
     "types:actions": "tsc --skipLibCheck --declaration --emitDeclarationOnly --allowJs --outDir packages/actions/types packages/actions/src/index.js",

@@ -1,5 +1,6 @@
 import { html } from 'uhtml';
 import { val, run, register, hydrate } from './front.esm.js';
+import { NavBar } from '../components/NavBar.js';
 
 // Document configuration organized by category
 const DOCS_CATEGORIES = [
@@ -234,6 +235,7 @@ function Sidebar(props) {
 }
 
 // Register components
+register('NavBar', NavBar);
 register('Sidebar', Sidebar);
 register('MarkdownViewer', MarkdownViewer);
 

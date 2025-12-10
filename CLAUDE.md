@@ -27,6 +27,30 @@ npx serve .
 # Navigate to http://localhost:3000/examples/index.html
 ```
 
+### Website Build Scripts (Optional)
+
+The framework itself has **zero build step**, but the website uses optional build scripts for progressive enhancement:
+
+```bash
+npm run navbar:generate  # Generate server-rendered navbar HTML
+npm run navbar:validate  # Validate navbar islands match config
+npm run docs:api         # Generate API documentation from JSDoc
+```
+
+**NavBar Generation**: Keeps server-rendered HTML in sync with props across all pages.
+
+- **Config**: `website/navbar-config.json` defines links for each page
+- **How it works**: Reads `NavBar.server.js` renderer → generates HTML → updates HTML files in-place
+- **Philosophy**: Generated HTML is committed to git (site works without building)
+- **When to use**: After editing navbar links or adding new pages with navbar
+
+To update navbar links:
+1. Edit `website/navbar-config.json`
+2. Run `npm run navbar:generate`
+3. Commit the updated HTML files
+
+**Why this works**: The framework ships as ES modules (no build). The website build is OPTIONAL and only for SEO/performance optimization (pre-rendering). This follows the same pattern as `generate-initial-doc.js` for docs.
+
 ## Architecture Overview
 
 ### Core Principles (see wiki/STANDARDS.md)
