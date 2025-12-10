@@ -1,5 +1,5 @@
 {
-  "name": "@frontjs/core",
+  "name": "@front.js/core",
   "version": "0.0.2",
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",
