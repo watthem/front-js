@@ -5,10 +5,11 @@ Common issues and solutions when working with front.js.
 ## Table of Contents
 
 1. [Navbar or Components Render Late](#navbar-or-components-render-late)
-2. [Template Tag Returns [object Object]](#template-tag-returns-object-object)
-3. [Component Doesn't Update](#component-doesnt-update)
-4. [Module Not Found Errors](#module-not-found-errors)
-5. [Hydration Fails Silently](#hydration-fails-silently)
+2. [Documentation Loads with Pre-rendered Content](#documentation-loads-with-pre-rendered-content)
+3. [Template Tag Returns [object Object]](#template-tag-returns-object-object)
+4. [Component Doesn't Update](#component-doesnt-update)
+5. [Module Not Found Errors](#module-not-found-errors)
+6. [Hydration Fails Silently](#hydration-fails-silently)
 
 ---
 
@@ -67,8 +68,6 @@ For critical components like navbars, render minimal HTML in the server template
   style="display: none;"
 ></div>
 ```
-
-Live example: The [homepage](/) and [Examples page](/examples/) server-render the navbar markup and hydrate only for active states and mobile toggles.
 
 **Solution 2: Extract Styles to CSS File**
 
@@ -132,6 +131,95 @@ Speed up JavaScript loading with resource hints:
 
 For **critical UI** (navbar, layout): Server-render HTML + extract styles to CSS
 For **interactive widgets** (todo list, counter): Use islands as-is
+
+---
+
+## Documentation Loads with Pre-rendered Content
+
+**Problem:** Documentation pages show a loading spinner until JavaScript hydrates and fetches markdown content.
+
+**Solution:** Use **progressive enhancement** to pre-render critical content in the server HTML.
+
+**How it works:**
+
+The documentation site's MarkdownViewer component supports an `initialContent` prop for pre-rendered HTML:
+
+```html
+<div data-island data-component="MarkdownViewer"
+     data-props='{"initialContent": "<h1>Quick Start</h1><p>...</p>"}'>
+  <div class="markdown-viewer">
+    <div class="markdown-content">
+      <!-- Pre-rendered HTML visible immediately -->
+      <h1>Quick Start</h1>
+      <p>Get front.js running in 30 seconds.</p>
+      <!-- ... rest of content ... -->
+    </div>
+  </div>
+</div>
+```
+
+**Benefits:**
+- ✅ Instant content visibility (no loading spinner)
+- ✅ Better SEO (search engines see full content)
+- ✅ Progressive enhancement (works without JS)
+- ✅ Maintains hash routing for other docs (only default doc is pre-rendered)
+
+**How to implement:**
+
+1. **Generate pre-rendered HTML:**
+```bash
+node scripts/generate-initial-doc.js
+```
+
+This outputs:
+- JSON-escaped HTML for `data-props` attribute
+- Plain HTML for inserting into the island div
+
+2. **Copy output to `index.html`:**
+
+Option A - Use `data-props` (JSON):
+```html
+<div data-island data-component="MarkdownViewer"
+     data-props='{"initialContent": "<h1>...</h1>"}'>
+```
+
+Option B - Use plain HTML in div:
+```html
+<div data-island data-component="MarkdownViewer" data-props='{}'>
+  <div class="markdown-viewer">
+    <div class="markdown-content">
+      <h1>Quick Start</h1>
+      <p>...</p>
+    </div>
+  </div>
+</div>
+```
+
+3. **How the component handles it:**
+
+```javascript
+function MarkdownViewer(props) {
+  const content = val(props.initialContent || '');
+  const loading = val(!props.initialContent);  // Skip loading if content provided
+
+  // If initialContent provided → use it, no spinner
+  // If user navigates to other doc → fetch as before
+}
+```
+
+**Zero-build philosophy:**
+
+This script is **optional** - you don't have to use it:
+- Site works fine without pre-rendering (loading spinner appears briefly)
+- Pre-rendering is a progressive enhancement, not a requirement
+- You can manually render HTML once and forget about it
+- No build step required for the site to function
+
+**Future direction:**
+
+This pattern may evolve into **`@frontjs/docsjs`** - a build-free documentation tool for runtime markdown rendering.
+
+**Pattern:** Apply this to any critical content that should be immediately visible (landing pages, hero sections, etc.).
 
 ---
 

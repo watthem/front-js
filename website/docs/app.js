@@ -6,7 +6,9 @@ const DOCS_CATEGORIES = [
   {
     label: 'Getting Started',
     items: [
-      { id: 'when-to-use', title: 'When to Use', file: 'reference/when-to-use.md' },
+      { id: 'quick-start', title: 'Quick Start', file: 'guides/quick-start.md' },
+      { id: 'getting-started', title: 'Getting Started', file: 'guides/getting-started.md' },
+      { id: 'basics', title: 'Basics', file: 'guides/basics.md' },
       { id: 'faq', title: 'FAQ', file: 'FAQ.md' }
     ]
   },
@@ -28,6 +30,7 @@ const DOCS_CATEGORIES = [
   {
     label: 'Reference',
     items: [
+      { id: 'troubleshooting', title: 'Troubleshooting', file: 'guides/troubleshooting.md' },
       { id: 'limitations', title: 'Limitations', file: 'reference/limitations.md' },
       { id: 'manifesto', title: 'Manifesto', file: 'content/MANIFESTO.md' }
     ]
@@ -45,12 +48,12 @@ const DOCS = DOCS_CATEGORIES.flatMap(cat => cat.items).reduce((acc, item) => {
  * Fetches and renders markdown content using marked library
  */
 function MarkdownViewer(props) {
-  const content = val('');
-  const loading = val(true);
+  const content = val(props.initialContent || '');
+  const loading = val(!props.initialContent);
   const error = val(null);
-  const initialHash = typeof window !== 'undefined' 
-    ? (window.location.hash.slice(1) || 'when-to-use')
-    : 'when-to-use';
+  const initialHash = typeof window !== 'undefined'
+    ? (window.location.hash.slice(1) || 'quick-start')
+    : 'quick-start';
   const docId = val(initialHash);
 
   // Fetch markdown content
@@ -66,7 +69,11 @@ function MarkdownViewer(props) {
 
     loading(true);
     error(null);
-    content('');
+
+    // Only clear content if fetching (not on initial render with initialContent)
+    if (!props.initialContent || docId !== 'quick-start') {
+      content('');
+    }
 
     try {
       const response = await fetch(doc.file);
@@ -109,7 +116,7 @@ function MarkdownViewer(props) {
   // Listen for hash changes
   run(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1) || 'when-to-use';
+      const hash = window.location.hash.slice(1) || 'quick-start';
       if (DOCS[hash]) {
         docId(hash);
       }
@@ -118,7 +125,7 @@ function MarkdownViewer(props) {
     handleHashChange();
 
     if (!window.location.hash) {
-      window.location.hash = 'when-to-use';
+      window.location.hash = 'quick-start';
     }
 
     window.addEventListener('hashchange', handleHashChange);
@@ -174,14 +181,14 @@ function MarkdownViewer(props) {
  */
 function Sidebar(props) {
   const initialHash = typeof window !== 'undefined'
-    ? (window.location.hash.slice(1) || 'when-to-use')
-    : 'when-to-use';
+    ? (window.location.hash.slice(1) || 'quick-start')
+    : 'quick-start';
   const activeDoc = val(initialHash);
 
   // Listen for hash changes
   run(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.slice(1) || 'when-to-use';
+      const hash = window.location.hash.slice(1) || 'quick-start';
       if (DOCS[hash]) {
         activeDoc(hash);
       }

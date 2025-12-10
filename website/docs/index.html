@@ -24,6 +24,15 @@
             <p><strong>JavaScript is required.</strong> Please enable JavaScript to view the documentation.</p>
           </div>
         </noscript>
+        <!-- Progressive Enhancement: Pre-render Quick Start for instant visibility
+             To pre-render the Quick Start content:
+             1. Run: node scripts/generate-initial-doc.js
+             2. Copy the output to data-props='{"initialContent": "..."}'
+             3. This provides instant content visibility (no loading spinner)
+
+             Without pre-rendering, the site works fine (loading spinner appears briefly).
+             With pre-rendering: Better SEO, instant content, progressive enhancement.
+        -->
         <div data-island data-component="MarkdownViewer" data-props='{}'>
           <div class="markdown-viewer">
             <div class="loading">
