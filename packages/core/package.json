@@ -46,5 +46,8 @@
   },
   "peerDependencies": {
     "uhtml": "^4.5.11"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^9.1.3"
   }
 }

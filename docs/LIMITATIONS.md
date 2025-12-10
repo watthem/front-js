@@ -14,16 +14,16 @@ This document outlines the known limitations, constraints, and trade-offs of fro
 **Issue:** uhtml cannot directly render nested arrays from `.map()` operations.
 
 **Problem Code:**
+
 ```javascript
 // ❌ This creates an array of arrays that uhtml can't render
 return () => html`
-  <div>
-    ${canvas.map((row, y) => row.map((cell, x) => html`<div>${cell}</div>`))}
-  </div>
+  <div>${canvas.map((row, y) => row.map((cell, x) => html`<div>${cell}</div>`))}</div>
 `;
 ```
 
 **Solution:**
+
 ```javascript
 // ✅ Flatten first, then map
 const flatCells = [];
@@ -33,11 +33,7 @@ canvas.forEach((row, y) => {
   });
 });
 
-return () => html`
-  <div>
-    ${flatCells.map(({ cell, x, y }) => html`<div>${cell}</div>`)}
-  </div>
-`;
+return () => html` <div>${flatCells.map(({ cell, x, y }) => html`<div>${cell}</div>`)}</div> `;
 ```
 
 **Why:** uhtml expects a flat array of templates, not nested structures. This is a limitation of the underlying template system, not front.js itself.
@@ -51,22 +47,26 @@ return () => html`
 **Issue:** Template literals with multi-line style strings can cause parsing issues.
 
 **Problem Code:**
+
 ```javascript
 // ❌ May cause issues
 return () => html`
-  <div style="
+  <div
+    style="
     color: red;
     background: blue;
-  ">Content</div>
+  "
+  >
+    Content
+  </div>
 `;
 ```
 
 **Solution:**
+
 ```javascript
 // ✅ Use single-line template strings
-return () => html`
-  <div style="color: ${color}; background: ${bg};">Content</div>
-`;
+return () => html` <div style="color: ${color}; background: ${bg};">Content</div> `;
 ```
 
 **Why:** String interpolation in attributes works best with single-line strings to avoid whitespace issues.
@@ -80,6 +80,7 @@ return () => html`
 **Issue:** Mutating objects or arrays in-place doesn't trigger updates.
 
 **Problem Code:**
+
 ```javascript
 const items = val([1, 2, 3]);
 
@@ -88,6 +89,7 @@ items().push(4); // Doesn't notify subscribers
 ```
 
 **Solution:**
+
 ```javascript
 // ✅ Create new reference
 items([...items(), 4]); // Notifies subscribers
@@ -96,6 +98,7 @@ items([...items(), 4]); // Notifies subscribers
 **Why:** front.js uses shallow equality checks (like most reactive systems). Only new references trigger updates.
 
 **Best Practice:** Always use immutable update patterns:
+
 - Arrays: `[...arr, newItem]`, `arr.filter(...)`, `arr.map(...)`
 - Objects: `{ ...obj, key: value }`
 
@@ -106,6 +109,7 @@ items([...items(), 4]); // Notifies subscribers
 **Issue:** `run()` doesn't automatically track values read inside async functions.
 
 **Problem Code:**
+
 ```javascript
 run(async () => {
   const id = userId(); // ✅ Tracked
@@ -115,10 +119,11 @@ run(async () => {
 ```
 
 **Solution:**
+
 ```javascript
 run(() => {
   const id = userId(); // ✅ Tracked synchronously
-  
+
   (async () => {
     const data = await fetch(`/api/${id}`);
     result(data);
@@ -137,6 +142,7 @@ run(() => {
 **Issue:** Dependencies are only tracked during execution, not conditionally.
 
 **Example:**
+
 ```javascript
 const showDetails = val(false);
 const userId = val(1);
@@ -164,10 +170,11 @@ run(() => {
 **Issue:** Component props are passed once during hydration and don't update.
 
 **Example:**
+
 ```javascript
 function Counter(props) {
   const count = val(props.start); // Only reads props.start once
-  
+
   // If the server changes data-props later, this won't update
   return () => html`<div>${count()}</div>`;
 }
@@ -176,6 +183,7 @@ function Counter(props) {
 **Why:** Islands Architecture assumes server-rendered HTML is static. Props are initial state only.
 
 **Workaround:** If you need reactive props:
+
 1. Use shared module-level `val()` for cross-component communication
 2. Use `postMessage` or custom events for communication
 3. Re-hydrate the island with new props (nuclear option)
@@ -189,12 +197,14 @@ function Counter(props) {
 **Issue:** front.js doesn't provide parent-child prop passing like React.
 
 **React Pattern (doesn't exist in front.js):**
+
 ```javascript
 // ❌ Not supported
 <ChildComponent parentValue={someValue} />
 ```
 
 **Solution 1: Shared State**
+
 ```javascript
 // Module-level shared state
 export const sharedData = val(null);
@@ -213,13 +223,16 @@ function Child(props) {
 ```
 
 **Solution 2: Custom Events**
+
 ```javascript
 // Parent dispatches events
 function Parent(props) {
   const notify = () => {
-    document.dispatchEvent(new CustomEvent('data-update', { 
-      detail: { value: someValue() } 
-    }));
+    document.dispatchEvent(
+      new CustomEvent('data-update', {
+        detail: { value: someValue() },
+      })
+    );
   };
   // ...
 }
@@ -246,6 +259,7 @@ function Child(props) {
 **Why:** This is by design. front.js is for server-rendered apps where the server handles routing.
 
 **Solutions:**
+
 1. **Server-side routing** (recommended) - Let your server framework handle routes
 2. **Hash routing** - Use `window.location.hash` for client-side routing
 3. **History API** - Use `pushState`/`popState` manually
@@ -262,10 +276,11 @@ function Child(props) {
 **Issue:** Rendering large lists without stable keys can cause performance issues.
 
 **Problem Code:**
+
 ```javascript
 return () => html`
   <ul>
-    ${items().map(item => html`<li>${item.name}</li>`)}
+    ${items().map((item) => html`<li>${item.name}</li>`)}
   </ul>
 `;
 ```
@@ -273,13 +288,14 @@ return () => html`
 **Issue:** uhtml uses order-based diffing. Inserting items at the start causes full re-render.
 
 **Solution:**
+
 ```javascript
 // ✅ Use keyed templates for large lists
 import { html } from 'uhtml/keyed';
 
 return () => html`
   <ul>
-    ${items().map(item => html.for(item, item.id)`<li>${item.name}</li>`)}
+    ${items().map((item) => html.for(item, item.id)`<li>${item.name}</li>`)}
   </ul>
 `;
 ```
@@ -295,6 +311,7 @@ return () => html`
 **Issue:** Deeply nested `run()` calls can cause cascading updates.
 
 **Problem Pattern:**
+
 ```javascript
 // ❌ Can cause update storms
 run(() => {
@@ -319,6 +336,7 @@ run(() => {
 **Why:** front.js doesn't provide virtual scrolling/windowing out of the box.
 
 **Solutions:**
+
 1. **Pagination** - Render only visible items
 2. **Virtual scrolling library** - Use [tanstack-virtual](https://github.com/TanStack/virtual) or similar
 3. **Lazy loading** - Load items as needed
@@ -334,11 +352,13 @@ run(() => {
 **Requirement:** Browsers must support ES Modules (`import`/`export`).
 
 **Supported:**
+
 - Chrome/Edge 61+
 - Firefox 60+
 - Safari 11+
 
 **Not Supported:**
+
 - Internet Explorer (all versions)
 - Very old mobile browsers
 
@@ -351,11 +371,13 @@ run(() => {
 **Issue:** Examples use import maps, which aren't supported in older browsers.
 
 **Supported:**
+
 - Chrome/Edge 89+
 - Firefox 108+
 - Safari 16.4+
 
 **Workaround:** Use full URLs in imports:
+
 ```javascript
 // Instead of import maps
 import { html } from 'https://esm.sh/uhtml@4.5.11';
@@ -372,6 +394,7 @@ import { html } from 'https://esm.sh/uhtml@4.5.11';
 **Why:** This is a server concern, not a client hydration concern.
 
 **Solution:** Use your server framework's CSRF protection:
+
 - Rails: `form_authenticity_token`
 - Django: `{% csrf_token %}`
 - Express: `csurf` middleware
@@ -385,6 +408,7 @@ import { html } from 'https://esm.sh/uhtml@4.5.11';
 **Why:** CSP is a server/HTTP header concern.
 
 **Best Practice:** Configure CSP headers on your server:
+
 ```
 Content-Security-Policy: default-src 'self'; script-src 'self' https://esm.sh
 ```
@@ -400,12 +424,15 @@ Content-Security-Policy: default-src 'self'; script-src 'self' https://esm.sh
 **Status:** TypeScript definitions can be generated from JSDoc comments.
 
 **Workaround:** Use JSDoc for type hints:
+
 ```javascript
 /**
  * @param {number} initialValue
  * @returns {{ (): number, (value: number): void }}
  */
-function val(initialValue) { /* ... */ }
+function val(initialValue) {
+  /* ... */
+}
 ```
 
 ---
@@ -415,6 +442,7 @@ function val(initialValue) { /* ... */ }
 **Issue:** No browser extension for debugging reactivity.
 
 **Workaround:** Use `console.log` or `run()` for debugging:
+
 ```javascript
 run(() => {
   console.log('Count changed:', count());
@@ -442,11 +470,13 @@ run(() => {
 **Reality:** front.js is new and has a smaller community than React/Vue.
 
 **Implications:**
+
 - Fewer Stack Overflow answers
 - Fewer third-party component libraries
 - More self-sufficiency required
 
 **Advantages:**
+
 - Simpler codebase (easier to understand internals)
 - Less churn (fewer breaking changes)
 - Direct access to maintainers
@@ -468,21 +498,25 @@ run(() => {
 To avoid disappointment, here's what front.js explicitly does **not** do:
 
 ### ❌ Not a Full SPA Framework
+
 - No built-in routing
 - No built-in state management beyond reactivity
 - No built-in data fetching abstractions
 
 ### ❌ Not a Build Tool
+
 - No bundler
 - No transpiler
 - No asset pipeline
 
 ### ❌ Not a Component Library
+
 - No UI components
 - No form validation library
 - No animation helpers
 
 ### ❌ Not a Server Framework
+
 - No SSR runtime
 - No API routes
 - No middleware system
@@ -500,6 +534,7 @@ Many "limitations" are intentional design decisions:
 5. **Minimal Core** - <5KB means trade-offs
 
 If you need features beyond these constraints, front.js may not be the right tool. Consider:
+
 - **React/Vue** - For full SPAs with complex state
 - **Astro** - For static site generation with islands
 - **HTMX** - For server-driven interactivity without JavaScript frameworks
@@ -550,6 +585,7 @@ front.js is a **focused tool** for a **specific use case**: hydrating server-ren
 - ✅ Server-first architecture
 
 Trade-offs include:
+
 - ❌ Limited to Islands Architecture
 - ❌ No full SPA features
 - ❌ Smaller ecosystem

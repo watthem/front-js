@@ -32,16 +32,16 @@ export const createRouter = (schemaMap, handlers) => ({
     if (validator && validator['~standard']) {
       const result = validator['~standard'].validate(payload);
       const { value, issues } = result instanceof Promise ? await result : result;
-      
+
       if (issues) {
         throw new Error(`[frontjs-actions] Validation failed: ${JSON.stringify(issues)}`);
       }
-      
+
       // 4. Execute with Validated Data
       return handlers[action](value, context);
     }
 
     // No schema? Pass raw payload (can be made strict mode in future)
     return handlers[action](payload, context);
-  }
+  },
 });

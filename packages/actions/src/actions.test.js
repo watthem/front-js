@@ -17,25 +17,25 @@ describe('@frontjs/actions', () => {
 
     it('handles basic action without schema', async () => {
       const handlers = {
-        'test:action': (payload) => ({ success: true, data: payload })
+        'test:action': (payload) => ({ success: true, data: payload }),
       };
       const router = createRouter({}, handlers);
-      
+
       const result = await router.handle({
         action: 'test:action',
-        payload: { foo: 'bar' }
+        payload: { foo: 'bar' },
       });
-      
+
       expect(result.success).toBe(true);
       expect(result.data.foo).toBe('bar');
     });
 
     it('throws error for unknown action', async () => {
       const router = createRouter({}, {});
-      
-      await expect(
-        router.handle({ action: 'unknown:action', payload: {} })
-      ).rejects.toThrow('[frontjs-actions] Unknown action');
+
+      await expect(router.handle({ action: 'unknown:action', payload: {} })).rejects.toThrow(
+        '[frontjs-actions] Unknown action'
+      );
     });
   });
 

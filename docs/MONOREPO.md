@@ -22,7 +22,7 @@ mkdir -p packages/core
 mv src tests dist build.config.js .npmignore packages/core/
 mv package.json packages/core/
 
-# Note: You might want to keep README.md and LICENSE in root 
+# Note: You might want to keep README.md and LICENSE in root
 # and copy them to core, but moving is safer for now to preserve history.
 cp README.md packages/core/
 cp LICENSE packages/core/ 2>/dev/null || :
@@ -43,9 +43,7 @@ Create a new `package.json` in the root folder. This controls the monorepo.
 {
   "name": "frontjs-workspace",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "test": "npm test --workspaces",
     "build": "npm run build --workspaces",
@@ -64,7 +62,7 @@ Open `packages/core/package.json`. You need to rename it and ensure file paths a
 
 ```json
 {
-  "name": "@frontjs/core", 
+  "name": "@frontjs/core",
   "version": "0.0.1",
   "type": "module",
   "main": "./dist/front.esm.js",
@@ -104,12 +102,12 @@ Create `packages/actions/package.json`.
     "test": "vitest"
   },
   "peerDependencies": {
-    "valibot": "^0.30.0" 
+    "valibot": "^0.30.0"
   }
 }
 ```
 
-*(Note: I added `valibot` as a peer dependency since `actions` relies on a Standard Schema validator).*
+_(Note: I added `valibot` as a peer dependency since `actions` relies on a Standard Schema validator)._
 
 ### 4\. Implement `actions` Package
 
@@ -138,7 +136,7 @@ export const createRouter = (schemaMap, handlers) => ({
     if (validator && validator['~standard']) {
       const result = validator['~standard'].validate(payload);
       const { value, issues } = result instanceof Promise ? await result : result;
-      
+
       if (issues) {
         throw new Error(`[frontjs-actions] Validation failed: ${JSON.stringify(issues)}`);
       }
@@ -146,7 +144,7 @@ export const createRouter = (schemaMap, handlers) => ({
     }
 
     return handlers[action](payload, context);
-  }
+  },
 });
 ```
 
@@ -158,12 +156,12 @@ export const createClient = (endpoint) => ({
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, payload })
+      body: JSON.stringify({ action, payload }),
     });
-    
+
     if (!res.ok) throw new Error(`[frontjs-actions] Server Error: ${res.statusText}`);
     return res.json();
-  }
+  },
 });
 ```
 
@@ -178,9 +176,8 @@ npm test
 
 You now have a scalable architecture.
 
-  * **`@frontjs/core`**: The view layer (1.34KB).
-  * **`@frontjs/actions`**: The command layer (Type-safe RPC).
-
+- **`@frontjs/core`**: The view layer (1.34KB).
+- **`@frontjs/actions`**: The command layer (Type-safe RPC).
 
 # Monorepo
 
@@ -194,10 +191,10 @@ Here is the plan to restructure your repo to support this **Private Workspace / 
 
 We will clear out the root directory, moving almost everything into `packages/`.
 
-  * **`packages/core`**: The runtime (formerly `@watthem/front-js`).
-  * **`packages/actions`**: The new command library.
-  * **`packages/docs`**: A new package containing the Website, KB, Wiki, and Community files. This becomes your public documentation repo.
-  * **`docs/` (Root)**: Contains **only** internal maintenance guides (like `MONOREPO.md`).
+- **`packages/core`**: The runtime (published as `@frontjs/core`).
+- **`packages/actions`**: The new command library.
+- **`packages/docs`**: A new package containing the Website, KB, Wiki, and Community files. This becomes your public documentation repo.
+- **`docs/` (Root)**: Contains **only** internal maintenance guides (like `MONOREPO.md`).
 
 <!-- end list -->
 
@@ -310,8 +307,8 @@ We use GitHub Actions to sync code. When you merge a PR into `main` in this priv
 
 ## 4\. Dependency Management
 
-  * **Internal Dependencies:** If `actions` depends on `core`, refer to it by version in `package.json`.
-  * **Dev Dependencies:** Shared tools (Prettier, ESLint, Vitest) are installed at the **Root** `package.json`.
+- **Internal Dependencies:** If `actions` depends on `core`, refer to it by version in `package.json`.
+- **Dev Dependencies:** Shared tools (Prettier, ESLint, Vitest) are installed at the **Root** `package.json`.
 
 ## 5\. Adding a New Package
 

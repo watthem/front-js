@@ -1,27 +1,27 @@
 This is the logical "Day 2" evolution of your project.
 
-You started with the **View Layer** (`front.js` / `@watthem/front-js`). Now you are solving the **Communication Layer** (`frontjs/actions`).
+You started with the **View Layer** (`front.js` / `@frontjs/core`). Now you are solving the **Communication Layer** (`@frontjs/actions`).
 
 By doing this, you aren't just building a library anymore; you are building a **Stack**. And you are doing it without falling into the trap of "Full Stack Magic" (Next.js/Remix). You are keeping the backend and frontend distinct, connected only by a typed, validated contract.
 
 Here is why `frontjs/actions` is a brilliant addition, and how to execute the "Namespace Takeover."
 
------
+---
 
 ### 1\. The Architectural Fit
 
 This completes the **Zero Trust** story.
 
-  * **`front-js` (Core):** "I don't trust the HTML string, so I sanitize it. I don't trust the hydration data, so I validate it."
-  * **`frontjs-actions`:** "I don't trust the network request, so I validate the input before it touches my business logic."
+- **`front-js` (Core):** "I don't trust the HTML string, so I sanitize it. I don't trust the hydration data, so I validate it."
+- **`frontjs-actions`:** "I don't trust the network request, so I validate the input before it touches my business logic."
 
 It replaces the vague "just use fetch" instruction in your Manifesto with a concrete, standardized pattern. It creates a **Command Pattern** for the web.
 
------
+---
 
 ### 2\. The Implementation: Keeping it "Boringly Safe"
 
-The magic of your proposal is that `shared/actions.ts` is the *only* link. The client imports the **Types**, not the **Code**.
+The magic of your proposal is that `shared/actions.ts` is the _only_ link. The client imports the **Types**, not the **Code**.
 
 Here is how we implement this to align with your "Standard Schema" work.
 
@@ -34,7 +34,7 @@ import { object, number, string } from 'valibot';
 
 export const ActionSchema = {
   'counter:increment': object({ amount: number() }),
-  'user:update': object({ name: string() })
+  'user:update': object({ name: string() }),
 };
 
 export type ActionMap = typeof ActionSchema;
@@ -52,7 +52,7 @@ export const router = createRouter(ActionSchema, {
   'counter:increment': async ({ amount }, context) => {
     // 'amount' is strictly typed as number
     return await db.increment(amount);
-  }
+  },
 });
 
 // Usage in an API route (Node/Bun/Edge)
@@ -73,7 +73,7 @@ const client = createClient<ActionMap>('/api/actions');
 client.send('counter:increment', { amount: 1 });
 ```
 
------
+---
 
 ### 3\. The Strategy: Claiming the Namespace
 
@@ -86,18 +86,18 @@ If you want to move from "User Project" to "Ecosystem," moving to a scoped names
     ```text
     frontjs/
     ├── packages/
-    │   ├── core/       (formerly @watthem/front-js)
-    │   ├── actions/    (the new library)
+    │   ├── core/       (published as @frontjs/core)
+    │   ├── actions/    (published as @frontjs/actions)
     │   └── dev/        (future: CLI tools)
     ```
 3.  **Publishing:**
-      * `@frontjs/core`
-      * `@frontjs/actions`
+    - `@frontjs/core`
+    - `@frontjs/actions`
 
 **The Psychology:**
 Seeing `@frontjs/core` implies stability and modularity. It tells the developer, "I can use the core without the actions, or the actions with React if I really wanted to."
 
------
+---
 
 ### 4\. Next Step: The Prototype
 
@@ -133,18 +133,18 @@ export const createRouter = (schemaMap, handlers) => ({
     if (validator && validator['~standard']) {
       const result = validator['~standard'].validate(payload);
       const { value, issues } = result instanceof Promise ? await result : result;
-      
+
       if (issues) {
         throw new Error(`[frontjs-actions] Validation failed: ${JSON.stringify(issues)}`);
       }
-      
+
       // 4. Execute with Validated Data
       return handlers[action](value, context);
     }
 
     // No schema? Pass raw payload (or throw if you want strict mode)
     return handlers[action](payload, context);
-  }
+  },
 });
 
 /**
@@ -156,16 +156,16 @@ export const createClient = (endpoint) => ({
     const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, payload })
+      body: JSON.stringify({ action, payload }),
     });
-    
+
     if (!res.ok) throw new Error(`[frontjs-actions] Server Error: ${res.statusText}`);
     return res.json();
-  }
+  },
 });
 ```
 
------
+---
 
 ### The Usage Proof (`usage.ts`)
 
@@ -178,15 +178,15 @@ import * as v from 'valibot';
 export const ActionSchema = {
   'auth:login': v.object({
     email: v.string([v.email()]),
-    password: v.string([v.minLength(8)])
+    password: v.string([v.minLength(8)]),
   }),
   'todo:create': v.object({
-    text: v.string()
-  })
+    text: v.string(),
+  }),
 };
 
 // Types are derived automatically
-export type Actions = typeof ActionSchema; 
+export type Actions = typeof ActionSchema;
 // ---------------------------------------------------------
 
 // 2. SERVER (server/api.ts)
@@ -198,11 +198,11 @@ const router = createRouter(ActionSchema, {
   'auth:login': async (payload, ctx) => {
     return await db.login(payload.email, payload.password);
   },
-  
+
   'todo:create': async (payload, ctx) => {
     // Validated automatically before this line runs
     return await db.todos.add(payload.text);
-  }
+  },
 });
 
 // Usage in Next.js / Node / Bun
@@ -219,14 +219,14 @@ const client = createClient<Actions>('/api/actions');
 
 // ✅ Autocompletes 'auth:login'
 // ✅ Enforces { email, password } shape
-await client.send('auth:login', { 
+await client.send('auth:login', {
   email: 'me@example.com',
-  password: 'correct-horse-battery-staple'
+  password: 'correct-horse-battery-staple',
 });
 ```
 
 ### Why this works for `front.js`
 
-1.  **Decoupled:** The client `front.js` app doesn't know *how* the server works, just *what* it accepts.
+1.  **Decoupled:** The client `front.js` app doesn't know _how_ the server works, just _what_ it accepts.
 2.  **Tiny:** The runtime overhead is negligible.
 3.  **Framework Agnostic:** The `router.handle` method accepts a standard `Request` object (Fetch API), which works in Node, Bun, Cloudflare Workers, Deno, and Edge environments.

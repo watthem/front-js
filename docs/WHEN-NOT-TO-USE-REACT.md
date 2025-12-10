@@ -6,7 +6,7 @@
 
 React Server Components deserialize payloads sent to Server Function endpoints. That deserialization layer is where the vulnerability lived. The more magic you have, the more ways it can break.
 
-My response was different: *remove the category of risk entirely.*
+My response was different: _remove the category of risk entirely._
 
 If you're building a server-rendered app where most of your page is static HTML with a few interactive islands, React's complexity isn't just overkill—it's a liability you can avoid.
 
@@ -28,11 +28,7 @@ front.js is a <5KB micro-framework that enforces Islands Architecture. Here's wh
 **Server renders HTML:**
 
 ```html
-<div 
-  data-island 
-  data-component="Counter" 
-  data-props='{"start": 10}'
-></div>
+<div data-island data-component="Counter" data-props='{"start": 10}'></div>
 ```
 
 **Client hydrates:**
@@ -42,7 +38,7 @@ import { html, val, register, hydrate } from 'front';
 
 function Counter(props) {
   const count = val(props.start || 0);
-  
+
   return () => html`
     <button onclick=${() => count(count() - 1)}>-</button>
     <span>${count()}</span>
@@ -71,7 +67,7 @@ That's it. No build step. No bundler. No serialization layer. Just HTML + JavaSc
 ✅ **Progressive enhancement** — Add interactivity to existing pages  
 ✅ **Security-critical apps** where serialization attack surfaces are unacceptable  
 ✅ **Performance-critical apps** where bundle size matters  
-✅ **Simple apps** that don't need React's ecosystem  
+✅ **Simple apps** that don't need React's ecosystem
 
 ## When NOT to Use front.js
 
@@ -79,7 +75,7 @@ That's it. No build step. No bundler. No serialization layer. Just HTML + JavaSc
 ❌ **Complex state management** — No Redux, no Zustand. Just `val`/`run`/`calc`  
 ❌ **Component libraries** — No Material-UI, no Chakra. Write your own  
 ❌ **Server functions** — If you need RPC-style server calls, use React or tRPC  
-❌ **Build tool integration** — No Vite plugins, no Webpack loaders. It's just JavaScript  
+❌ **Build tool integration** — No Vite plugins, no Webpack loaders. It's just JavaScript
 
 ## The Honest Truth
 
@@ -91,6 +87,7 @@ front.js exists because React Server Components are solving a problem most apps 
 - A 200KB+ JavaScript bundle
 
 You need:
+
 - Server-rendered HTML
 - A few interactive islands
 - Fast page loads

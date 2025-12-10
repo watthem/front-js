@@ -148,7 +148,7 @@ This document exists to set clear expectations and prevent scope creep. front.js
 
 ## Why This Document Exists
 
-Every feature request starts with "can you just add X?" This document explains our design philosophy *before* you ask.
+Every feature request starts with "can you just add X?" This document explains our design philosophy _before_ you ask.
 
 front.js is intentionally minimal. If you need more, React, Vue, and Svelte are excellent frameworks. front.js is for a specific use case: server-rendered apps with islands.
 
@@ -159,5 +159,6 @@ That's not a limitation—it's the design.
 ---
 
 **See also:**
+
 - [LIMITATIONS.md](./LIMITATIONS.md) — What front.js can't do (technical constraints)
 - [WHEN-TO-USE-FRONT.md](./WHEN-TO-USE-FRONT.md) — When to use front.js (and when not to)

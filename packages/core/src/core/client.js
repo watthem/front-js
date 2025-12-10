@@ -16,30 +16,26 @@ function validateWithStandardSchema(schema, data, context) {
 
   try {
     const result = schema['~standard'].validate(data);
-    
+
     // If result is a Promise, return async validation
     if (result instanceof Promise) {
-      return result.then(resolved => {
-        if (resolved.issues) {
-          console.error(
-            `[frontjs] Schema validation failed for "${context}":`,
-            resolved.issues
-          );
-          return { valid: false, value: null, issues: resolved.issues };
-        }
-        return { valid: true, value: resolved.value, issues: null };
-      }).catch(err => {
-        console.error(`[frontjs] Validator Error for "${context}":`, err);
-        return { valid: false, value: null, issues: err };
-      });
+      return result
+        .then((resolved) => {
+          if (resolved.issues) {
+            console.error(`[frontjs] Schema validation failed for "${context}":`, resolved.issues);
+            return { valid: false, value: null, issues: resolved.issues };
+          }
+          return { valid: true, value: resolved.value, issues: null };
+        })
+        .catch((err) => {
+          console.error(`[frontjs] Validator Error for "${context}":`, err);
+          return { valid: false, value: null, issues: err };
+        });
     }
-    
+
     // Synchronous validation
     if (result.issues) {
-      console.error(
-        `[frontjs] Schema validation failed for "${context}":`,
-        result.issues
-      );
+      console.error(`[frontjs] Schema validation failed for "${context}":`, result.issues);
       return { valid: false, value: null, issues: result.issues };
     }
 
@@ -82,7 +78,7 @@ export function register(name, componentFn, options = {}) {
   }
   registry.set(name, {
     componentFn,
-    schema: options.schema
+    schema: options.schema,
   });
 }
 

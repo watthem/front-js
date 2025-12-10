@@ -13,28 +13,33 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
 ## Development Setup
 
 1. **Clone the repo:**
+
    ```bash
    git clone https://github.com/your-username/front-js.git
    cd front-js
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Run examples:**
+
    ```bash
    npx serve .
    # Navigate to http://localhost:3000/examples/index.html
    ```
 
 4. **Build:**
+
    ```bash
    npm run build
    ```
 
 5. **Check bundle size:**
+
    ```bash
    npm run size-check
    ```
@@ -54,10 +59,11 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
    - [`wiki/PRD.md`](./wiki/PRD.md) - Product requirements
 
 2. **Create a feature branch:**
+
    ```bash
    git checkout -b feat/your-feature-name
    ```
-   
+
    **Branch Naming Convention:**
    - `feat/` - New features
    - `fix/` - Bug fixes
@@ -77,18 +83,20 @@ We welcome contributions! Please read the [Blueprint](./docs/BLUEPRINT.md) and [
    - Verify bundle size with `npm run size-check`
 
 5. **Format code:**
+
    ```bash
    npm run format
    ```
 
 6. **Commit with Conventional Commits:**
+
    ```bash
    # Format: <type>(<scope>): <subject>
    git commit -m "feat(reactivity): add cleanup support to run"
    git commit -m "fix(hydration): handle invalid JSON gracefully"
    git commit -m "docs(readme): add table of contents"
    ```
-   
+
    **Commit Types:**
    - `feat:` - New feature
    - `fix:` - Bug fix
@@ -154,12 +162,12 @@ npm run test:watch # Watch mode
 
 ## Pull Request Guidelines
 
-* **Follow the Blueprint:** Changes to the architecture must be discussed in `docs/BLUEPRINT.md` first.
-* **Keep it Dependency-Free:** Do not add NPM dependencies to the runtime. `uhtml` is the only allowed exception (peer dependency).
-* **Test Thoroughly:** Run tests and verify examples work.
-* **Check Size:** Ensure bundle size stays under 5KB.
-* **Update Docs:** Update wiki/API.md and README if adding/changing APIs.
-* **Security Review:** All changes are reviewed for security implications.
+- **Follow the Blueprint:** Changes to the architecture must be discussed in `docs/BLUEPRINT.md` first.
+- **Keep it Dependency-Free:** Do not add NPM dependencies to the runtime. `uhtml` is the only allowed exception (peer dependency).
+- **Test Thoroughly:** Run tests and verify examples work.
+- **Check Size:** Ensure bundle size stays under 5KB.
+- **Update Docs:** Update wiki/API.md and README if adding/changing APIs.
+- **Security Review:** All changes are reviewed for security implications.
 
 ## Architecture Decisions
 

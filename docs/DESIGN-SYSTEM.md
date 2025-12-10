@@ -11,19 +11,23 @@
 ## Color Palette
 
 ### Primary
+
 - **Neon Lime / Volt:** `#ccff00`
 - **Dark Lime:** `#aadd00`
 
 ### Backgrounds
+
 - **Deep Black:** `#0a0a0a` (Main background)
 - **Dark Grey:** `#111111` (Secondary background / Panels)
 - **Code Background:** `#1a1a1a`
 
 ### Text
+
 - **Primary Text:** `#ededed` (High legibility)
 - **Secondary Text:** `#a1a1aa` (Muted)
 
 ### Borders
+
 - **Subtle Border:** `#333333`
 
 ## Typography
@@ -35,16 +39,19 @@
 ## UI Components
 
 ### Buttons
+
 - **Primary:** Neon Lime background (`#ccff00`), Black text, Uppercase, Bold
 - **Secondary:** Transparent background, White text, Bordered
 
 ### Cards / Panels
+
 - Dark background (`#111111`)
 - 1px Border (`#333333`)
 - 4px Border Radius
 - Subtle hover lift effect
 
 ### Code Blocks
+
 - Dark background (`#1a1a1a`)
 - Neon Lime text for highlighting
 - Bordered

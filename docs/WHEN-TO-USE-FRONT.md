@@ -6,7 +6,7 @@
 
 React Server Components deserialize payloads sent to Server Function endpoints. That deserialization layer is where the vulnerability lived. The more magic you have, the more ways it can break.
 
-This got us thinking: *what if we removed that category of risk entirely?*
+This got us thinking: _what if we removed that category of risk entirely?_
 
 ## Libraries vs Frameworks: A Quick Distinction
 
@@ -35,11 +35,7 @@ front.js is a <5KB hydration micro-framework that enforces Islands Architecture.
 **Server renders HTML:**
 
 ```html
-<div 
-  data-island 
-  data-component="Counter" 
-  data-props='{"start": 10}'
-></div>
+<div data-island data-component="Counter" data-props='{"start": 10}'></div>
 ```
 
 **Client hydrates:**
@@ -49,7 +45,7 @@ import { html, val, register, hydrate } from 'front';
 
 function Counter(props) {
   const count = val(props.start || 0);
-  
+
   return () => html`
     <button onclick=${() => count(count() - 1)}>-</button>
     <span>${count()}</span>
@@ -79,7 +75,7 @@ That's it. No build step. No bundler. No serialization layer. Just HTML + JavaSc
 ✅ **Security-critical apps** where serialization attack surfaces are unacceptable  
 ✅ **Performance-critical apps** where bundle size matters  
 ✅ **Complementing frameworks** — Use front.js for specific islands in Next.js, Redwood, or other frameworks  
-✅ **Simple apps** that don't need React's full ecosystem  
+✅ **Simple apps** that don't need React's full ecosystem
 
 ## When NOT to Use front.js
 
@@ -87,7 +83,7 @@ That's it. No build step. No bundler. No serialization layer. Just HTML + JavaSc
 ❌ **Complex state management** — No Redux, no Zustand. Just `val`/`run`/`calc`  
 ❌ **Component libraries** — No Material-UI, no Chakra. Write your own  
 ❌ **Server functions** — If you need RPC-style server calls, use React or tRPC  
-❌ **Build tool integration** — No Vite plugins, no Webpack loaders. It's just JavaScript  
+❌ **Build tool integration** — No Vite plugins, no Webpack loaders. It's just JavaScript
 
 ## When NOT to Use React (the Library)
 
@@ -99,6 +95,7 @@ If you're building a server-rendered app where most of your page is static HTML 
 - Complex build-time optimizations
 
 You need:
+
 - Server-rendered HTML
 - A few interactive islands
 - Fast page loads

@@ -1,4 +1,4 @@
-import { render } from 'uhtml';
+import { render } from './renderer.js';
 import { run } from './reactivity.js';
 
 /**
