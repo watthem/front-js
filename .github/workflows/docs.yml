@@ -1,0 +1,52 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'packages/*/src/**/*.js'
+      - '.github/workflows/docs.yml'
+      - 'scripts/generate-api-docs.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate API documentation
+        run: npm run docs:api
+
+      - name: Generate TypeScript definitions
+        run: npm run types:generate
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code website/docs/api/ || echo "docs_changed=true" >> $GITHUB_OUTPUT
+          git diff --exit-code packages/*/types/ || echo "types_changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated docs
+        if: steps.git-check.outputs.docs_changed == 'true' || steps.git-check.outputs.types_changed == 'true'
+        run: |
+          git config user.name "frontjs-bot"
+          git config user.email "bot@frontjs.dev"
+          git add website/docs/api/ packages/*/types/ || true
+          git commit -m "docs: auto-generate API docs and TypeScript definitions [skip ci]" || exit 0
+          git push

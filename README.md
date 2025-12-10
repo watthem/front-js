@@ -1,11 +1,11 @@
-# front.js
+# frontjs
 
 **The secure-by-default, islands-first micro-framework.**
 
-[![NPM Version](https://img.shields.io/npm/v/@watthem/front-js.svg)](https://www.npmjs.com/package/@watthem/front-js)
+[![NPM Version](https://img.shields.io/npm/v/@frontjs/core.svg)](https://www.npmjs.com/package/@frontjs/core)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![CI](https://github.com/watthem/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/watthem/front-js/actions/workflows/ci.yml)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@watthem/front-js)](https://bundlephobia.com/package/@watthem/front-js)
+[![CI](https://github.com/frontjs/core/actions/workflows/ci.yml/badge.svg)](https://github.com/frontjs/core/actions/workflows/ci.yml)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@frontjs/core)](https://bundlephobia.com/package/@frontjs/core)
 
 **🌐 [Website](https://frontjs.dev)** | **📚 [Documentation](https://frontjs.dev/KB/)** | **💻 [Examples](https://frontjs.dev/examples/)**
 
@@ -28,22 +28,33 @@
 - [Contributing](#contributing)
 - [License](#license)
 
+## Monorepo Structure
+
+This repository is organized as a monorepo containing:
+
+- **[@frontjs/core](./packages/core/)** - The runtime (<5KB) with Islands Architecture hydration
+- **[@frontjs/actions](./packages/actions/)** - Type-safe command/RPC layer with Standard Schema validation
+
 ## Install
 
 ```bash
-npm install front-js
+# Install the core runtime
+npm install @frontjs/core uhtml
+
+# Optional: Install actions for type-safe server communication
+npm install @frontjs/actions
 ```
 
 Or use directly via CDN:
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "front-js": "https://esm.sh/front-js@0.0.1",
-    "uhtml": "https://esm.sh/uhtml@4.5.11"
+  {
+    "imports": {
+      "front-js": "https://esm.sh/front-js@0.0.1",
+      "uhtml": "https://esm.sh/uhtml@4.5.11"
+    }
   }
-}
 </script>
 ```
 
@@ -56,32 +67,28 @@ Output your HTML with `data-island`, `data-component`, and `data-props`.
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>My App</title>
-</head>
-<body>
-  <div 
-    data-island 
-    data-component="Counter" 
-    data-props='{"start": 10}'
-  ></div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>My App</title>
+  </head>
+  <body>
+    <div data-island data-component="Counter" data-props='{"start": 10}'></div>
 
-  <script type="importmap">
-  {
-    "imports": {
-      "uhtml": "https://esm.sh/uhtml@4.5.11"
-    }
-  }
-  </script>
-  <script type="module" src="./app.js"></script>
-</body>
+    <script type="importmap">
+      {
+        "imports": {
+          "uhtml": "https://esm.sh/uhtml@4.5.11"
+        }
+      }
+    </script>
+    <script type="module" src="./app.js"></script>
+  </body>
 </html>
 ```
 
 **2. JavaScript** - Register your component and hydrate:
 
-```javascript       
+```javascript
 import { html, val, register, hydrate } from './src/index.js';
 
 function Counter(props) {
@@ -100,16 +107,34 @@ register('Counter', Counter);
 hydrate();
 ```
 
+### ⚠️ Important: html Tag vs Plain Template Literals
+
+The `html` tag returns a **template object**, not a string:
+
+```javascript
+// ✅ CORRECT: Use html tag with render()
+const template = html`<div>Hello</div>`;
+render(container, template);
+
+// ❌ WRONG: html tag with string API
+element.innerHTML = html`<div>Hello</div>`; // Shows "[object Object]"
+
+// ✅ CORRECT: Use plain template literal for strings
+element.innerHTML = `<div>Hello</div>`;
+```
+
+📖 See [Template Tags vs Strings Guide](./docs/Template-Tags-vs-Strings.md) for details.
+
 ## Why front.js?
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-[![CI](https://github.com/watthem/front-js/actions/workflows/ci.yml/badge.svg)](https://github.com/watthem/front-js/actions/workflows/ci.yml)
+[![CI](https://github.com/frontjs/core/actions/workflows/ci.yml/badge.svg)](https://github.com/frontjs/core/actions/workflows/ci.yml)
 
-* 🏝 **Islands Architecture:** Hydrate only what needs interaction.
-* 🔒 **Secure by Default:** Data flows via JSON only. No server closures.
-* ⚡ **Tiny Runtime:** <5KB gzipped. No build step required.
-* 🛡 **Sanitized Rendering:** Powered by `uhtml` to prevent XSS.
-* 🎯 **Fine-Grained Reactivity:** Value-based state management (val/run/calc) with automatic dependency tracking.
+- 🏝 **Islands Architecture:** Hydrate only what needs interaction.
+- 🔒 **Secure by Default:** Data flows via JSON only. No server closures.
+- ⚡ **Tiny Runtime:** <5KB gzipped. No build step required.
+- 🛡 **Sanitized Rendering:** Powered by `uhtml` to prevent XSS.
+- 🎯 **Fine-Grained Reactivity:** Value-based state management (val/run/calc) with automatic dependency tracking.
 
 > **Note:** Built in response to recent security concerns with React Server Components ([context](https://overreacted.io/a-chain-reaction/)).
 
@@ -146,10 +171,8 @@ Components are functions that return render functions:
 ```javascript
 function MyComponent(props) {
   const state = val(props.initialValue);
-  
-  return () => html`
-    <div>Value: ${state()}</div>
-  `;
+
+  return () => html` <div>Value: ${state()}</div> `;
 }
 ```
 
@@ -158,11 +181,7 @@ function MyComponent(props) {
 Components are hydrated from server-rendered HTML:
 
 ```html
-<div
-  data-island
-  data-component="MyComponent"
-  data-props='{"initialValue": 42}'
-></div>
+<div data-island data-component="MyComponent" data-props='{"initialValue": 42}'></div>
 ```
 
 ### Lifecycle Cleanup

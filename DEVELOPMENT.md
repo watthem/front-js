@@ -41,6 +41,7 @@ npm start
 ```
 
 This serves:
+
 - **Website**: `http://localhost:3000` (main landing page)
 - **KB API**: `http://localhost:3000/api/render?file=FILENAME.md`
 
@@ -71,6 +72,7 @@ npm run deploy:cf
 The `website/` directory is deployed to https://frontjs.dev.
 
 **Configuration:**
+
 - Custom domain configured via `website/CNAME`
 - Deployment uses wrangler CLI
 - See `package.json` for deployment scripts
@@ -122,6 +124,7 @@ Since both are pure static sites, you can:
 3. Use any static hosting service
 
 **Important:** Make sure to copy the entire directory contents, including:
+
 - `index.html`
 - `app.js`
 - `styles.css`
@@ -156,26 +159,31 @@ front-js/
 ## Quick Reference
 
 ### Start Website Locally
+
 ```bash
 cd website && npx serve . -p 8000
 ```
 
 ### Start KB Locally
+
 ```bash
 cd KB && npx serve . -p 8001
 ```
 
 ### Start back.js Server
+
 ```bash
 cd back-js && npm start
 ```
 
 ### Deploy Website to Netlify
+
 ```bash
 cd website && netlify deploy --prod
 ```
 
 ### Deploy KB to Netlify
+
 ```bash
 cd KB && netlify deploy --prod
 ```

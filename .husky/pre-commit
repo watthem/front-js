@@ -1,0 +1,5 @@
+# Validate documentation placement
+node scripts/validate-docs-placement.js
+
+# Run tests
+npm test

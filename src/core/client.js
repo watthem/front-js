@@ -3,6 +3,54 @@ import { defineComponent } from './component.js';
 const registry = new Map();
 
 /**
+ * Validates data using a Standard Schema compliant validator.
+ * @param {Object} schema - Standard Schema validator with ~standard property
+ * @param {*} data - Data to validate
+ * @param {string} context - Context string for error messages (e.g., component name)
+ * @returns {{valid: boolean, value: *, issues: *}|Promise<{valid: boolean, value: *, issues: *}>} - Validation result (sync or async)
+ */
+function validateWithStandardSchema(schema, data, context) {
+  if (!schema || !schema['~standard']) {
+    return { valid: true, value: data, issues: null };
+  }
+
+  try {
+    const result = schema['~standard'].validate(data);
+    
+    // If result is a Promise, return async validation
+    if (result instanceof Promise) {
+      return result.then(resolved => {
+        if (resolved.issues) {
+          console.error(
+            `[frontjs] Schema validation failed for "${context}":`,
+            resolved.issues
+          );
+          return { valid: false, value: null, issues: resolved.issues };
+        }
+        return { valid: true, value: resolved.value, issues: null };
+      }).catch(err => {
+        console.error(`[frontjs] Validator Error for "${context}":`, err);
+        return { valid: false, value: null, issues: err };
+      });
+    }
+    
+    // Synchronous validation
+    if (result.issues) {
+      console.error(
+        `[frontjs] Schema validation failed for "${context}":`,
+        result.issues
+      );
+      return { valid: false, value: null, issues: result.issues };
+    }
+
+    return { valid: true, value: result.value, issues: null };
+  } catch (err) {
+    console.error(`[frontjs] Validator Error for "${context}":`, err);
+    return { valid: false, value: null, issues: err };
+  }
+}
+
+/**
  * Validates that a component name is alphanumeric (with optional underscores/hyphens).
  * Prevents injection attacks via component names.
  * @param {string} name - Component name to validate
@@ -24,12 +72,12 @@ function isValidComponentName(name) {
 export function register(name, componentFn, options = {}) {
   if (!isValidComponentName(name)) {
     console.error(
-      `[front.js] Invalid component name "${name}". Component names must be alphanumeric (with optional underscores/hyphens).`
+      `[frontjs] Invalid component name "${name}". Component names must be alphanumeric (with optional underscores/hyphens).`
     );
     return;
   }
   if (typeof componentFn !== 'function') {
-    console.error(`[front.js] Component "${name}" must be a function.`);
+    console.error(`[frontjs] Component "${name}" must be a function.`);
     return;
   }
   registry.set(name, {
@@ -53,13 +101,13 @@ export async function hydrate(root = document.body) {
 
     // Security: Validate component name format
     if (!name) {
-      console.warn(`[front.js] Island element missing "data-component" attribute.`, island);
+      console.warn(`[frontjs] Island element missing "data-component" attribute.`, island);
       continue;
     }
 
     if (!isValidComponentName(name)) {
       console.error(
-        `[front.js] Invalid component name "${name}" on island element. Skipping.`,
+        `[frontjs] Invalid component name "${name}" on island element. Skipping.`,
         island
       );
       continue;
@@ -68,7 +116,7 @@ export async function hydrate(root = document.body) {
     // Security: Validate component existence
     const entry = registry.get(name);
     if (!entry) {
-      console.warn(`[front.js] Component "${name}" not registered. Skipping island.`, island);
+      console.warn(`[frontjs] Component "${name}" not registered. Skipping island.`, island);
       continue;
     }
 
@@ -80,7 +128,7 @@ export async function hydrate(root = document.body) {
       props = JSON.parse(island.dataset.props || '{}');
     } catch (e) {
       console.error(
-        `[front.js] Failed to parse props for component "${name}". Invalid JSON.`,
+        `[frontjs] Failed to parse props for component "${name}". Invalid JSON.`,
         e,
         island
       );
@@ -88,31 +136,18 @@ export async function hydrate(root = document.body) {
     }
 
     // Validate schema if provided
-    if (schema && schema['~standard']) {
-      try {
-        const result = schema['~standard'].validate(props);
-        const resolved = result instanceof Promise ? await result : result;
-
-        if (resolved.issues) {
-          console.error(
-            `[front.js] Schema validation failed for "${name}":`,
-            resolved.issues,
-            island
-          );
-          continue;
-        }
-        props = resolved.value;
-      } catch (err) {
-        console.error(`[front.js] Validator Error for "${name}":`, err);
-        continue;
-      }
+    const validation = validateWithStandardSchema(schema, props, name);
+    const resolved = validation instanceof Promise ? await validation : validation;
+    if (!resolved.valid) {
+      continue;
     }
+    props = resolved.value;
 
     // Initialize component
     try {
       const renderFn = componentFn(props);
       if (typeof renderFn !== 'function') {
-        console.error(`[front.js] Component "${name}" did not return a render function.`, island);
+        console.error(`[frontjs] Component "${name}" did not return a render function.`, island);
         continue;
       }
       defineComponent(renderFn, island);
@@ -120,7 +155,7 @@ export async function hydrate(root = document.body) {
       // Cleanup marker
       island.removeAttribute('data-island');
     } catch (e) {
-      console.error(`[front.js] Error initializing component "${name}".`, e, island);
+      console.error(`[frontjs] Error initializing component "${name}".`, e, island);
       // Continue with other islands even if one fails
     }
   }
