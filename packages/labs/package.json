@@ -1,0 +1,38 @@
+{
+  "name": "@frontjs/labs",
+  "version": "0.0.3",
+  "description": "Experimental utilities for the Front.js ecosystem.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    },
+    "./unstable/shaders": {
+      "import": "./src/unstable/shaders.js"
+    },
+    "./unstable/raf": {
+      "import": "./src/unstable/raf.js"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [
+    "frontjs",
+    "experimental",
+    "labs",
+    "webgl",
+    "animation"
+  ],
+  "author": "Matthew Hendricks <matthew.scott.hendricks@gmail.com>",
+  "homepage": "https://frontjs.dev",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
