@@ -3,6 +3,31 @@
   "description": "Metadata for front.js examples including runtime compatibility",
   "examples": [
     {
+      "id": "query-method",
+      "title": "The QUERY Method",
+      "description": "A live HTTP QUERY request (RFC 10008) — a read with a body — fetched by an island and answered by a Service Worker, with no backend.",
+      "htmlFile": "query-method.html",
+      "jsFile": "query-method.js",
+      "status": "published",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": [
+        "val",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "fetch",
+        "ServiceWorker"
+      ],
+      "tested": true,
+      "notes": "Verified with Playwright: the request goes out as QUERY and the Service Worker receives the method verbatim. Requires an http(s) origin (Service Workers don't run on file://)."
+    },
+    {
       "id": "calculator",
       "title": "Calculator",
       "description": "Derived state and complex event handling",

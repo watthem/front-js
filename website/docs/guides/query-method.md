@@ -130,9 +130,10 @@ the platform verb so the mapping is obvious when it lands.
 - **Standard:** RFC 10008, Proposed Standard, June 2026. Stable to build on.
 - **Browsers:** `fetch()` can send QUERY today (it's not a forbidden method).
   End-to-end support depends on your **server** and any intermediaries.
-- **Live demo:** an interactive, in-page QUERY demo (a Service Worker intercepts
-  the request so you can watch a real `QUERY` fly by in DevTools on a static
-  host) is in progress — see [Examples](../../examples/).
+- **Live demo:** try it — **[The QUERY Method, live](../../examples/query-method.html)**.
+  A front.js island sends a real `QUERY` request; a Service Worker answers it, so
+  there's no backend. Open DevTools → Network and watch the `QUERY` method go
+  out. (Verified end-to-end: the worker receives the method verbatim as `QUERY`.)
 
 ## Sources
 
