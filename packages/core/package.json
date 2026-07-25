@@ -1,5 +1,5 @@
 {
-  "name": "@front.js/core",
+  "name": "@frontjs/core",
   "version": "0.0.2",
   "description": "A lightweight (<5KB) secure-by-default JavaScript micro-framework enforcing Islands Architecture",
   "type": "module",
@@ -27,7 +27,7 @@
   "scripts": {
     "build": "node build.config.js",
     "build:check": "node build.config.js --check-size",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "vitest --watch",
     "size-check": "npm run build:check",
     "prepublishOnly": "npm run build && cd ../.. && npm run types:core && npm run docs:api"

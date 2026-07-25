@@ -23,8 +23,8 @@ npm run lint             # Lint code with ESLint
 ### Running Examples
 
 ```bash
-npx serve .
-# Navigate to http://localhost:3000/examples/index.html
+npx serve website
+# Navigate to http://localhost:3000/examples/
 ```
 
 ### Website Build Scripts (Optional)
@@ -53,7 +53,7 @@ To update navbar links:
 
 ## Architecture Overview
 
-### Core Principles (see wiki/STANDARDS.md)
+### Core Principles (see docs/architecture/STANDARDS.md)
 
 1. **HTML is Truth**: Server renders HTML, client hydrates islands
 2. **Zero Magic**: Explicit component registration, no auto-importing
@@ -61,20 +61,29 @@ To update navbar links:
 4. **Platform First**: Use native browser APIs (ESM, tagged templates, native events)
 5. **Headless Reactivity**: Reactivity system is DOM-agnostic
 
-### Module Structure
+### Repository Layout
+
+This is an npm-workspaces monorepo. The two published packages live under
+`packages/`; `npm test`, `npm run build`, and `npm run size-check` at the root
+delegate into them via `--workspaces`.
 
 ```
-src/
-├── core/
-│   ├── reactivity.js    # val/run/calc primitives (DOM-agnostic)
-│   ├── component.js     # Component wrapper + run binding
-│   └── client.js        # Component registry + hydration algorithm
-└── index.js             # Public API exports + uhtml re-exports
+packages/
+├── core/                # @frontjs/core — the <5KB runtime
+│   ├── src/
+│   │   ├── core/
+│   │   │   ├── reactivity.js   # val/run/calc primitives (DOM-agnostic)
+│   │   │   ├── component.js    # Component wrapper + run binding
+│   │   │   ├── client.js       # Component registry + hydration + Standard Schema
+│   │   │   └── renderer.js     # uhtml render re-export
+│   │   └── index.js            # Public API exports
+│   └── tests/                  # Vitest suites (reactivity, client, security, ...)
+└── actions/             # @frontjs/actions — type-safe command/RPC layer
 ```
 
 **Critical**: `core/reactivity.js` must NEVER import DOM APIs or uhtml. It's headless by design.
 
-### Reactivity System (src/core/reactivity.js)
+### Reactivity System (packages/core/src/core/reactivity.js)
 
 - **`val(initialValue)`**: Fine-grained reactive primitive with auto-dependency tracking
   - Acts as getter (no args) and setter (with arg)
@@ -92,7 +101,7 @@ src/
 
 **Dependency tracking**: When a value is read inside a run, it adds the run to its subscribers Set. On value update, all subscribers are notified.
 
-### Hydration System (src/core/client.js)
+### Hydration System (packages/core/src/core/client.js)
 
 **Component Registration**:
 
@@ -113,7 +122,7 @@ register(name, componentFn); // name must match /^[a-zA-Z0-9_-]+$/
 
 **Security**: All validation errors are logged and skipped (non-fatal), preventing one bad island from breaking the entire page.
 
-### Component Model (src/core/component.js)
+### Component Model (packages/core/src/core/component.js)
 
 Components are higher-order functions:
 
@@ -153,7 +162,7 @@ function MyComponent(props) {
 
 - **Hard limit**: <5KB minified + gzipped (excluding uhtml peer dependency)
 - Enforced via `npm run size-check` which fails CI if exceeded
-- Build config: `build.config.js` uses esbuild with target es2020
+- Build config: `packages/core/build.config.js` uses esbuild with target es2020
 
 ### Security Requirements
 
@@ -175,7 +184,7 @@ function MyComponent(props) {
 ### Writing Components
 
 ```javascript
-import { html, val, register, hydrate } from 'front';
+import { html, val, register, hydrate } from '@frontjs/core';
 
 function Counter(props) {
   const count = val(props.start || 0);
@@ -216,15 +225,15 @@ npm test -- tests/reactivity.test.js
 
 When making changes, verify against:
 
-1. **docs/BLUEPRINT.md** - Detailed architecture and implementation specs
-2. **wiki/STANDARDS.md** - "North Star" principles (Headless Reactivity, Standard Schema alignment, Platform First)
-3. **wiki/PRD.md** - Original product requirements
+1. **docs/architecture/BLUEPRINT.md** - Detailed architecture and implementation specs
+2. **docs/architecture/STANDARDS.md** - "North Star" principles (Headless Reactivity, Standard Schema alignment, Platform First)
+3. **docs/strategy/PRD.md** - Original product requirements
 
 Major architectural changes require:
 
 1. Discussion in GitHub issue first
-2. Update to docs/BLUEPRINT.md
-3. Alignment with wiki/STANDARDS.md
+2. Update to docs/architecture/BLUEPRINT.md
+3. Alignment with docs/architecture/STANDARDS.md
 4. Size budget verification
 
 ## Standard Schema Future

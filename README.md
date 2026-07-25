@@ -9,6 +9,24 @@
 
 **🌐 [Website](https://frontjs.dev)** | **📚 [Documentation](https://frontjs.dev/KB/)** | **💻 [Examples](https://frontjs.dev/examples/)**
 
+> ### 📚 An educational reference implementation
+>
+> **front.js is a working, tested exploration of how browser reactivity and
+> Islands Architecture work under the hood — built to be _read_, not depended
+> on in production.** The entire reactivity engine is ~150 well-commented,
+> DOM-free lines with 74 passing tests, and the whole runtime is **1.43 KB
+> gzipped**. If you've ever wanted to understand how Solid, Preact Signals, or
+> the TC39 Signals proposal actually work, this is a from-scratch implementation
+> small enough to hold in your head.
+>
+> **Start here → [How the Reactivity Works](./website/docs/guides/how-reactivity-works.md)** — a
+> guided walk through the engine, ending with the one limitation a production
+> signals library solves and this one deliberately doesn't.
+>
+> It is not maintained as a production framework and makes no stability
+> guarantees. Use it to learn; reach for [Solid](https://www.solidjs.com/),
+> [Preact](https://preactjs.com/), or [Astro](https://astro.build/) to ship.
+
 ## Table of Contents
 
 - [Install](#install)
@@ -45,13 +63,14 @@ npm install @frontjs/core uhtml
 npm install @frontjs/actions
 ```
 
-Or use directly via CDN:
+Or run it with no build step at all — the framework ships as plain ES modules.
+Point an import map at the source (or your own copy) and load it directly:
 
 ```html
 <script type="importmap">
   {
     "imports": {
-      "front-js": "https://esm.sh/front-js@0.0.1",
+      "@frontjs/core": "./packages/core/src/index.js",
       "uhtml": "https://esm.sh/uhtml@4.5.11"
     }
   }
@@ -89,7 +108,7 @@ Output your HTML with `data-island`, `data-component`, and `data-props`.
 **2. JavaScript** - Register your component and hydrate:
 
 ```javascript
-import { html, val, register, hydrate } from './src/index.js';
+import { html, val, register, hydrate } from '@frontjs/core';
 
 function Counter(props) {
   const count = val(props.start || 0);
@@ -123,7 +142,7 @@ element.innerHTML = html`<div>Hello</div>`; // Shows "[object Object]"
 element.innerHTML = `<div>Hello</div>`;
 ```
 
-📖 See [Template Tags vs Strings Guide](./docs/Template-Tags-vs-Strings.md) for details.
+📖 See [Template Tags vs Strings Guide](./website/docs/guides/template-tags-vs-strings.md) for details.
 
 ## Why front.js?
 
@@ -145,7 +164,7 @@ element.innerHTML = `<div>Hello</div>`;
 Values are reactive primitives that track dependencies automatically:
 
 ```javascript
-import { val, run } from './src/index.js';
+import { val, run } from '@frontjs/core';
 
 const count = val(0);
 
@@ -219,18 +238,22 @@ document.body.addEventListener('htmx:beforeSwap', (event) => {
 
 ## Examples
 
-See the [`examples/`](./examples/) directory for complete working examples, including a Todo app that demonstrates all framework features.
+See the [`website/examples/`](./website/examples/) directory for complete working
+examples — a calculator, a GitHub user lookup, an HTMX integration, and more.
 
-To run examples:
+To run them:
 
 ```bash
-npx serve .
-# Navigate to http://localhost:3000/examples/index.html
+npx serve website
+# Navigate to http://localhost:3000/examples/
 ```
 
 ## API Reference
 
-See [`wiki/API.md`](./wiki/API.md) for complete API documentation.
+The engine internals are documented in
+[`docs/architecture/ENGINE.md`](./docs/architecture/ENGINE.md), and the guided
+walkthrough lives in
+[`website/docs/guides/how-reactivity-works.md`](./website/docs/guides/how-reactivity-works.md).
 
 ### Quick Reference
 
@@ -244,12 +267,12 @@ See [`wiki/API.md`](./wiki/API.md) for complete API documentation.
 
 ## Limitations
 
-front.js is designed for server-rendered apps with Islands Architecture. See [`docs/LIMITATIONS.md`](./docs/LIMITATIONS.md) for:
+front.js is designed for server-rendered apps with Islands Architecture. For the
+trade-offs and known constraints, see:
 
-- Known constraints and trade-offs
-- When NOT to use front.js
-- Performance considerations
-- Workarounds for common issues
+- [How the Reactivity Works → the dependency-cleanup limitation](./website/docs/guides/how-reactivity-works.md#the-honest-limitation-dependencies-are-never-pruned)
+- [`tests/limitations.test.js`](./packages/core/tests/limitations.test.js) — executable documentation of the current edges
+- [When to use front.js](./docs/strategy/WHEN-TO-USE-FRONT.md) and [when not to reach for React](./docs/strategy/WHEN-NOT-TO-USE-REACT.md)
 
 ## Security Model
 
@@ -270,7 +293,7 @@ front.js follows the "Islands Architecture" pattern:
 3. **Data flows** via JSON in `data-props` attributes
 4. **No magic** - explicit component registration
 
-See [`docs/BLUEPRINT.md`](./docs/BLUEPRINT.md) for detailed architecture documentation.
+See [`docs/architecture/BLUEPRINT.md`](./docs/architecture/BLUEPRINT.md) for detailed architecture documentation.
 
 ## Development
 
