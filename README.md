@@ -19,13 +19,20 @@
 > the TC39 Signals proposal actually work, this is a from-scratch implementation
 > small enough to hold in your head.
 >
-> **Start here → [How the Reactivity Works](./website/docs/guides/how-reactivity-works.md)** — a
-> guided walk through the engine, ending with the one limitation a production
-> signals library solves and this one deliberately doesn't.
+> **New here? Follow the guided path → [Learn front.js](./website/docs/guides/README.md).**
+> Or jump straight to the heart of it →
+> [How the Reactivity Works](./website/docs/guides/how-reactivity-works.md), a
+> walk through the engine that ends with the one limitation a production signals
+> library solves and this one deliberately doesn't.
 >
 > It is not maintained as a production framework and makes no stability
 > guarantees. Use it to learn; reach for [Solid](https://www.solidjs.com/),
 > [Preact](https://preactjs.com/), or [Astro](https://astro.build/) to ship.
+>
+> _Author's note: this project grew out of several years of using Claude models
+> as a patient tutor for how modern signal engines actually work. It's a place to
+> think in public — so the docs are written to teach the next person the way I
+> was taught._
 
 ## Table of Contents
 
