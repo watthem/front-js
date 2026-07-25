@@ -10,6 +10,11 @@ The whole engine lives in one headless, DOM-free file:
 [`packages/core/src/core/reactivity.js`](../../../packages/core/src/core/reactivity.js).
 It exports three primitives — `val`, `run`, and `calc` — and nothing else.
 
+> 💡 **See it move first.** The
+> **[Signal Graph demo](../../examples/signal-graph.html)** visualizes everything
+> below: change a value and watch exactly which derived values and effects
+> recompute (and which don't). Come back here for the how.
+
 ## The one idea
 
 Every fine-grained reactivity system is a variation on a single trick:
