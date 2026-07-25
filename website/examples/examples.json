@@ -3,6 +3,54 @@
   "description": "Metadata for front.js examples including runtime compatibility",
   "examples": [
     {
+      "id": "signal-graph",
+      "title": "The Signal Graph",
+      "description": "A live visualization of fine-grained reactivity: change a value and watch exactly which derived values and effects recompute, driven by real front.js runs.",
+      "htmlFile": "signal-graph.html",
+      "jsFile": "signal-graph.js",
+      "status": "published",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": [
+        "val",
+        "run",
+        "html",
+        "svg"
+      ],
+      "browserAPIs": [],
+      "tested": true,
+      "notes": "Verified with Playwright: changing a value highlights only the dependent branch (fine-grained isolation confirmed). Uses uhtml's svg tag for the reactive SVG graph."
+    },
+    {
+      "id": "query-method",
+      "title": "The QUERY Method",
+      "description": "A live HTTP QUERY request (RFC 10008) — a read with a body — fetched by an island and answered by a Service Worker, with no backend.",
+      "htmlFile": "query-method.html",
+      "jsFile": "query-method.js",
+      "status": "published",
+      "runtime": {
+        "browser": true,
+        "node": false,
+        "deno": false,
+        "bun": false
+      },
+      "features": [
+        "val",
+        "run",
+        "html"
+      ],
+      "browserAPIs": [
+        "fetch",
+        "ServiceWorker"
+      ],
+      "tested": true,
+      "notes": "Verified with Playwright: the request goes out as QUERY and the Service Worker receives the method verbatim. Requires an http(s) origin (Service Workers don't run on file://)."
+    },
+    {
       "id": "calculator",
       "title": "Calculator",
       "description": "Derived state and complex event handling",

@@ -1,5 +1,5 @@
 import { html } from 'uhtml';
-import { val, run, register, hydrate } from '../../src/index.js';
+import { val, run, register, hydrate } from '../front.esm.js';
 
 /**
  * GitHub User Search Component

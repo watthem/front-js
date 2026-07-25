@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Signal Graph — front.js Example</title>
+    <meta
+      name="description"
+      content="A live visualization of fine-grained reactivity: change a value and watch exactly which derived values and effects recompute."
+    />
+    <style>
+      :root {
+        --bg: #0f1117;
+        --panel: #1a1d27;
+        --line: #2c3040;
+        --text: #e6e8ee;
+        --muted: #9aa0b0;
+        --accent: #b9ff3c; /* neon lime */
+        --accent-ink: #14210a;
+        --val: #4aa8ff;
+        --calc: #34c759;
+        --effect: #ff9f0a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.5;
+      }
+      h1 { font-size: 1.9rem; margin: 0 0 0.25rem; }
+      .lede { color: var(--muted); margin: 0 0 1.5rem; }
+      a { color: var(--accent); }
+      code {
+        font-family: 'SF Mono', Monaco, monospace;
+        background: #000;
+        color: var(--accent);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+
+      .demo {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
+      }
+
+      /* Controls */
+      .sg-controls { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem; }
+      .stepper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #0b0d13;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0.4rem 0.6rem;
+      }
+      .stepper-name {
+        font-weight: 700;
+        color: var(--val);
+        font-family: 'SF Mono', Monaco, monospace;
+        width: 1.2em;
+        text-align: center;
+      }
+      .stepper-val {
+        min-width: 2ch;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+      .stepper button {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: #22262f;
+        color: var(--text);
+        font-size: 1.1rem;
+        cursor: pointer;
+        line-height: 1;
+      }
+      .stepper button:hover { border-color: var(--accent); color: var(--accent); }
+
+      .sg-punchline {
+        min-height: 2.5em;
+        color: var(--text);
+        background: #0b0d13;
+        border-left: 3px solid var(--accent);
+        border-radius: 4px;
+        padding: 0.6rem 0.8rem;
+        margin: 0.75rem 0;
+        font-size: 0.95rem;
+      }
+
+      /* Graph */
+      .sg-svg { width: 100%; height: auto; display: block; }
+      .edge { fill: none; stroke: #3a3f52; stroke-width: 2; transition: stroke 0.2s; }
+      .edge.hot { stroke: var(--accent); stroke-width: 3; }
+      .arrow { fill: #3a3f52; }
+      .arrow-hot { fill: var(--accent); }
+
+      .node-box {
+        fill: #0b0d13;
+        stroke: #3a3f52;
+        stroke-width: 2;
+        transition: stroke 0.2s, filter 0.2s;
+      }
+      .node.val .node-box { stroke: var(--val); }
+      .node.calc .node-box { stroke: var(--calc); }
+      .node.effect .node-box { stroke: var(--effect); }
+      .node.active .node-box {
+        stroke: var(--accent);
+        stroke-width: 3;
+        filter: drop-shadow(0 0 6px rgba(185, 255, 60, 0.7));
+      }
+      .node-label { fill: var(--text); font-size: 15px; font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
+      .node-value { fill: var(--muted); font-size: 13px; font-family: 'SF Mono', Monaco, monospace; }
+      .node.active .node-value { fill: var(--accent); }
+      .badge { fill: #22262f; stroke: var(--line); stroke-width: 1; }
+      .node.active .badge { fill: var(--accent); stroke: var(--accent); }
+      .badge-text { fill: var(--muted); font-size: 12px; font-weight: 700; }
+      .node.active .badge-text { fill: var(--accent-ink); }
+
+      .sg-legend { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+      .chip {
+        font-size: 0.78rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.15rem 0.6rem;
+        color: var(--muted);
+      }
+      .chip.val { border-color: var(--val); color: var(--val); }
+      .chip.calc { border-color: var(--calc); color: var(--calc); }
+      .chip.effect { border-color: var(--effect); color: var(--effect); }
+
+      .takeaway { color: var(--muted); font-size: 0.95rem; }
+    </style>
+  </head>
+  <body>
+    <h1>The Signal Graph, live</h1>
+    <p class="lede">
+      Fine-grained reactivity means work is proportional to the <em>dependency
+      graph</em>, not the whole app. Nudge <code>a</code>, <code>b</code>, or
+      <code>c</code> below and watch exactly which derived values and effects
+      recompute — the highlights are driven by real front.js <code>run</code>s
+      re-executing, not an animation.
+    </p>
+
+    <div class="demo">
+      <div data-island data-component="SignalGraph" data-props="{}"></div>
+    </div>
+
+    <p class="takeaway">
+      Notice the two branches are independent: changing <code>a</code> or
+      <code>b</code> recomputes <code>a + b → × 2 → log₁</code>, but never the
+      <code>c²</code> branch — and vice-versa. Each node's badge counts how many
+      times it has recomputed, so you can see the framework doing the minimum
+      work. This is the same machinery walked through in
+      <a href="../docs/guides/how-reactivity-works.md">How the Reactivity Works</a>.
+    </p>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "uhtml": "https://esm.sh/uhtml@4.5.11"
+        }
+      }
+    </script>
+    <script type="module" src="./signal-graph.js"></script>
+  </body>
+</html>

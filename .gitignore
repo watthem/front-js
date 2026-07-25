@@ -56,3 +56,10 @@ yarn.lock
 
 .agents/
 notes/
+
+# Private LLM fact-check vault (Karpathy LLM-wiki method) — NEVER published.
+# Kept locally / mirrored to ~/Vaults. See vault/README.md.
+vault/
+Vaults/
+*.private.md
+*.private/

@@ -7,7 +7,6 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -16,7 +15,7 @@
     "allowJs": true,
     "checkJs": false
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests"]
+  "include": ["packages/*/src/**/*"],
+  "exclude": ["node_modules", "dist", "**/tests/**", "**/*.test.js"]
 }
 

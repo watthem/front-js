@@ -1,5 +1,5 @@
 {
-  "name": "@front.js/actions",
+  "name": "@frontjs/actions",
   "version": "0.0.2",
   "description": "Type-safe command/RPC layer with Standard Schema validation for frontjs",
   "type": "module",
@@ -25,7 +25,8 @@
     "README.md"
   ],
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublishOnly": "cd ../.. && npm run types:actions && npm run docs:api"
   },
   "keywords": [

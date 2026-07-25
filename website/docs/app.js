@@ -16,9 +16,11 @@ const DOCS_CATEGORIES = [
   {
     label: 'Guides',
     items: [
+      { id: 'how-reactivity-works', title: 'How the Reactivity Works', file: 'guides/how-reactivity-works.md' },
       { id: 'security', title: 'Security Model', file: 'guides/security.md' },
       { id: 'integrations', title: 'Integrations', file: 'guides/integrations.md' },
-      { id: 'template-tags', title: 'Template Tags vs Strings', file: 'guides/template-tags-vs-strings.md' }
+      { id: 'template-tags', title: 'Template Tags vs Strings', file: 'guides/template-tags-vs-strings.md' },
+      { id: 'query-method', title: 'The QUERY Method', file: 'guides/query-method.md' }
     ]
   },
   {
