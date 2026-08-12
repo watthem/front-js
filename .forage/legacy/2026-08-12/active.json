@@ -3,7 +3,8 @@
     "DEV": 2
   },
   "current_month": "2026-02",
-  "items": [
+  "items": [],
+  "resolved": [
     {
       "id": "front-js.DEV-2026-02-001",
       "next_step": "Review front-js repo state and identify next actions",
@@ -12,7 +13,9 @@
       "stage": "draft",
       "title": "Initialize forage pipeline",
       "type": "DEV",
-      "updated": "2026-02-09T00:00:00Z"
+      "updated": "2026-02-09T00:00:00Z",
+      "resolution": "Archived: parked per organization-of-one triage 2026-02-27",
+      "resolved_at": "2026-02-27T19:22:59.746452+00:00"
     },
     {
       "id": "front-js.DEV-2026-02-001",
@@ -21,8 +24,9 @@
       "stage": "draft",
       "title": "Discussion about a self-maintained AI-native framework and its potential implications for frontend development.",
       "type": "DEV",
-      "updated": "2026-02-13T01:39:05Z"
+      "updated": "2026-02-13T01:39:05Z",
+      "resolution": "Archived: parked per organization-of-one triage 2026-02-27",
+      "resolved_at": "2026-02-27T19:22:59.746452+00:00"
     }
-  ],
-  "resolved": []
+  ]
 }
