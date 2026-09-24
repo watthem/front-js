@@ -51,61 +51,6 @@ To update navbar links:
 
 **Why this works**: The framework ships as ES modules (no build). The website build is OPTIONAL and only for SEO/performance optimization (pre-rendering). This follows the same pattern as `generate-initial-doc.js` for docs.
 
-## Publishing & npm
-
-### Scope Naming
-
-- **Local directory**: `@frontjs` (no dot)
-- **npm scope**: `@front.js` (with dot) — this is what users install
-- The npm org `@frontjs` (no dot) does **not** exist
-
-### Published Packages
-
-| Package | Version | Description |
-|---------|---------|-------------|
-| `@front.js/core` | 0.0.2 | Main runtime (<5KB) |
-| `@front.js/actions` | 0.0.2 | Type-safe RPC layer with Standard Schema |
-| `@watthem/front-js` | 0.0.1 | Earlier publish under personal scope (superseded) |
-
-All published by npm user `watthem` (matthew.scott.hendricks@gmail.com).
-
-### Public Presence
-
-- **Website**: https://frontjs.dev (live, Cloudflare Pages)
-- **GitHub**: https://github.com/watthem/front-js (0 stars, 0 forks as of Feb 2026)
-- **npm**: https://www.npmjs.com/package/@front.js/core
-- **frontjs.org**: Does not exist (domain not active)
-- **External coverage**: None — no blog posts, articles, or third-party mentions found
-- **Note**: GitHub org `github.com/frontjs` is an unrelated dead project from 2013
-
-## Monorepo Structure
-
-```
-front-js/
-├── packages/
-│   ├── core/              # @front.js/core — runtime (<5KB)
-│   └── actions/           # @front.js/actions — type-safe RPC
-├── website/               # frontjs.dev static site (Cloudflare Pages)
-│   ├── docs/              # Public documentation (guides, references)
-│   └── examples/          # 7 working demos (todo, calculator, etc.)
-├── KB/                    # Internal knowledge base (static)
-├── back-js/               # Optional minimal Node.js file server (zero deps)
-├── docs/                  # Development docs (architecture, strategy, contributing)
-│   ├── architecture/      # BLUEPRINT.md, ENGINE.md, DESIGN.md, STANDARDS.md
-│   ├── strategy/          # MANIFESTO.md, PRD.md, ROADMAP.md, VISION.md
-│   └── contributing/      # MONOREPO.md, REQUIREMENTS.md
-├── scripts/               # Build/validation scripts
-├── .repomix/              # Repomix configs (developer, pm, marketing, docs, ai)
-└── .github/workflows/     # CI, GitHub Pages deploy, auto-docs generation
-```
-
-## Deployment
-
-- **Primary**: Cloudflare Pages (`npm run deploy:cf:prod`) — serves frontjs.dev
-- **Backup**: GitHub Pages (auto-deploy on push to main via `.github/workflows/deploy-pages.yml`)
-- **Website dir**: `website/` is the deploy target (static HTML/CSS/JS, no build required)
-- **Local dev**: `cd website && npx serve . -p 8000` or `cd back-js && npm start`
-
 ## Architecture Overview
 
 ### Core Principles (see wiki/STANDARDS.md)
